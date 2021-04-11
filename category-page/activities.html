@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bahopa-magazin online de echipamente</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles_category.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
@@ -18,15 +18,15 @@
 
     <div class="navibar">
       <a class="logo" href="/Project-TW/index.html">
-        <img class="logo_image" src="images/logo.png" alt="Shop logo">
+        <img class="logo_image" src="../images/logo.png" alt="Shop logo">
       </a>
 
     <nav>
       <ol>
-        <li>  <a href="category-page/clothing.html">Îmbrăcăminte</a> </li>
-        <li>  <a href="category-page/shoes.html">Încălțăminte</a> </li>
-        <li>  <a href="category-page/accesories.html">Accesorii</a> </li>
-        <li>  <a href="category-page/activities.html">Activități</a> </li>
+        <li>  <a href="../category-page/clothing.html">Îmbrăcăminte</a> </li>
+        <li>  <a href="../category-page/shoes.html">Încălțăminte</a> </li>
+        <li>  <a href="../category-page/accesories.html">Accesorii</a> </li>
+        <li>  <a href="../category-page/activities.html">Activități</a> </li>
       </ol>
     </nav>
         <div class="icon">
@@ -38,75 +38,6 @@
 
     </div>
   </header>
-
-
-
-
-
-  <div class="slideshow-container">
-
-  <div class="mySlides fade">
-    <img src="images/sales.jpg" style="width:100%">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="images/offer.jpg" style="width:100%">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="images/contest.jpg" style="width:100%">
-  </div>
-
-  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-  <a class="next" onclick="plusSlides(1)">&#10095;</a>
-
-  </div>
-
-  <script>
-  var slideIndex = 1;
-  showSlides(slideIndex);
-
-  function plusSlides(n) {
-    showSlides(slideIndex += n);
-  }
-
-  function currentSlide(n) {
-    showSlides(slideIndex = n);
-  }
-
-  function showSlides(n) {
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
-    var dots = document.getElementsByClassName("dot");
-    if (n > slides.length) {slideIndex = 1}
-    if (n < 1) {slideIndex = slides.length}
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-    }
-    for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex-1].style.display = "block";
-    dots[slideIndex-1].className += " active";
-  }
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
