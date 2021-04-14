@@ -191,9 +191,7 @@ img {vertical-align: middle;}
   .prev, .next,.text {font-size: 11px}
 }
 
-body{
-  background-color: #333;
-}
+
 
 h6, .footer_links, footer a{
   color: #f2f2f2;
@@ -208,7 +206,7 @@ h6, .footer_links, footer a{
 }
 
 .row-footer{
-
+    background-color: black;
     display:grid;
     width:100% ;
     grid-template-columns: repeat(4,1fr);
