@@ -57,9 +57,9 @@ headerTemplate.innerHTML = `
   <header>
   <nav>
       <ul>
-      <li><a href="">Home</a></li>
-      <li><a href="">Shop</a></li>
-      <li><a href="">Auction</a></li>
+      <li><a href="/frontEnd/components/home-page/home.html">Home</a></li>
+      <li><a href="/frontEnd/components/shop-page/shop.html">Shop</a></li>
+      <li><a href="/frontEnd/components/auction-page/auction.html">Auction</a></li>
       </ul>
       <span class="flex-spacer"></span>
       <i class="fas fa-user-alt"></i>
