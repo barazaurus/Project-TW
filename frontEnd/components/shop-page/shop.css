@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    color: #333;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.shop-categories {
+    position: absolute;
+    height: 650px;
+    left: 0;
+    top: 9%;
+    left: 0.1%;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    border-radius: 20px;
+    box-shadow: 10px 10px 40px 0 rgba(0, 0, 0, 0.1);
+}
+
+ul{
+    display: flex;
+    flex-direction: column;   
+}
+
+li{
+    font-family: monospace;
+    font-size: 20px;
+    margin: 10px 0 0 0;
+    padding: 0 20px 0 20px;
+    cursor: pointer;
+}
+li:hover{
+
+} 
