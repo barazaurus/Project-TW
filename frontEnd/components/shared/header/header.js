@@ -1,4 +1,5 @@
 const headerTemplate = document.createElement("template");
+
 headerTemplate.innerHTML = `
   <style>
     img {
@@ -16,7 +17,7 @@ headerTemplate.innerHTML = `
       position: fixed;
       width: 100%;
     }
-
+    
     ul {
       padding-inline-start: 0;
     }
@@ -24,27 +25,45 @@ headerTemplate.innerHTML = `
       list-style: none;
       display: inline;
     }
-
+    
     a {
       font-weight: 700;
       margin: 0 25px;
       color: #fff;
       text-decoration: none;
     }
-
+    
     a:hover {
       padding-bottom: 5px;
       box-shadow: inset 0 -2px 0 0 #fff;
     }
     .fa-user-alt{
       color: white;
-      margin-right: 40px;
       cursor: pointer;
+      margin-right: 10px;
+    }
+    .fa-user-alt:hover{
+      opacity: 0.7;
     }
    .flex-spacer{
       flex: 1 1 auto;
     }
-
+    #logout-btn{
+      text-decoration: none;
+      background: transparent;
+      outline: 0;
+      border: 0;
+      cursor: pointer;
+      margin-right: 20px;
+    }
+    #logout-img{
+      height: 20px;
+      width: 30px;
+    }
+    #logout-btn:hover{
+      opacity: 0.7;
+    }
+    
   </style>
   <head>
     <link
@@ -63,8 +82,12 @@ headerTemplate.innerHTML = `
       </ul>
       <span class="flex-spacer"></span>
       <i class="fas fa-user-alt"></i>
+      <button id="logout-btn">
+        <img id="logout-img" src="../../assets/images/logout-icon.svg" />
+      </button>
   </nav>
   </header>
+  
 `;
 
 class Header extends HTMLElement {
@@ -77,5 +100,10 @@ class Header extends HTMLElement {
     shadowRoot.appendChild(headerTemplate.content);
   }
 }
+
+let test = headerTemplate.content.querySelector('#logout-btn');
+test.addEventListener('click', () => {
+  window.location.href = '/bahopa-FrontEnd/bahopa-app/app.html'
+})
 
 customElements.define("header-component", Header);

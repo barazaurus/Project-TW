@@ -1,54 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-      crossorigin="anonymous"
-    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="app.css" rel="stylesheet" type="text/css" />
     <script
-      src="./components/shared/header/header.js"
+      src="./app.js"
       type="text/javascript"
       defer
     ></script>
+    <title>Document</title>
   </head>
   <body>
-    <header-component></header-component>
-    <main>
-      <img id="logo" src="assets/images/new-logo.png" alt="" />
-      <div class="main-child">
-        <div class="top-rated--products">
-          <div class="top-rated--product">
-            <img src="" alt="" />
-            <div class="product-body">
-              <h2>Name Of The Product</h2>
-              <span>Price</span>
+    <div class="wrapper">
+      <div class="title-text">
+        <img id="logo" src="../bahopa-app/assets/images/new-logo.png">
+      </div>
+      <div class="form-container">
+        <div class="slide-controls">
+          <input type="radio" name="slide" id="login" checked />
+          <input type="radio" name="slide" id="signup" />
+          <label for="login" class="slide login">Login</label>
+          <label for="signup" class="slide signup">Signup</label>
+          <div class="slider-tab"></div>
+        </div>
+        <div class="form-inner">
+          <form action="#" class="login">
+            <div class="field">
+              <input type="text" placeholder="Email Address" required />
             </div>
-            <button class="btn-buy">
-              BUY <i class="fa fa-shopping-cart"></i>
-            </button>
-          </div>
-          <div class="top-rated--product">
-            <img src="" alt="" />
-            <h2>Name Of The Product</h2>
-            <span>Price</span>
-            <button class="btn-buy">
-              BUY <i class="fa fa-shopping-cart"></i>
-            </button>
-          </div>
-          <div class="top-rated--product">
-            <img src="" alt="" />
-            <h2>Name Of The Product</h2>
-            <span>Price</span>
-            <button class="btn-buy">
-              BUY <i class="fa fa-shopping-cart"></i>
-            </button>
-          </div>
+            <div class="field">
+              <input type="password" placeholder="Password" required />
+            </div>
+
+            <div class="field btn">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Login" />
+            </div>
+            <div class="signup-link">
+              Not a member? <a href="">Signup now</a>
+            </div>
+          </form>
+          <form action="#" class="signup">
+            <div class="field">
+              <input type="text" placeholder="Email Address" required />
+            </div>
+            <div class="field">
+              <input type="password" placeholder="Password" required />
+            </div>
+            <div class="field">
+              <input type="password" placeholder="Confirm password" required />
+            </div>
+            <div class="field btn">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Signup" />
+            </div>
+          </form>
         </div>
       </div>
-    </main>
+    </div>
   </body>
-  <html></html>
 </html>
