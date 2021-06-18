@@ -10,6 +10,15 @@ function objFromQueryParam(param) {
   return obj;
 }
 
+function writeImage(blob, path) {
+  let regex = /^data:.+\/(.+);base64,(.*)$/;
+  let matches = blob.match(regex);
+  let ext = matches[1];
+  let data = matches[2];
+  let buffer = Buffer.from(data, "base64");
+  fs.writeFileSync(path, buffer);
+}
+
 function extractParams(path) {
   let paramObject = {};
 
@@ -44,8 +53,8 @@ function serverHandler(request, response) {
   let dh = new DataHandler();
   let paramObj = extractParams(request.url);
 
-  console.log(extractParams(request.url));
-
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT");
   if (request.method === "GET") {
     if (paramObj.path === "products") {
       if (Object.keys(paramObj.query).length > 0) {
@@ -80,6 +89,9 @@ function serverHandler(request, response) {
   } else if (request.method === "POST") {
     if (paramObj.path === "products") {
       buildBody(request).then((body) => {
+        let path = "../images/" + body.name.replace(" ", "_") + '.jpeg';
+        writeImage(body.image, path);
+        body.image = path;
         dh.addProduct(body)
           .then((data) => {
             response.writeHead(200);
@@ -94,8 +106,8 @@ function serverHandler(request, response) {
       buildBody(request).then((body) => {
         dh.registerUser(body)
           .then((data) => {
-              response.writeHead(200);
-              response.end(JSON.stringify(data));
+            response.writeHead(200);
+            response.end(JSON.stringify(data));
           })
           .catch((status) => {
             if (status === 402) {
@@ -107,27 +119,31 @@ function serverHandler(request, response) {
             }
           });
       });
-    }else if(paramObj.path === "login"){
-        buildBody(request).then((body)=>{
-            dh.getUserByCredentials(body.email,body.password).then(data => {
-                response.writeHead(200);
-                response.end(JSON.stringify(data));
-            }).catch((status)=>{
-                response.writeHead(404);
-                response.end(JSON.stringify({status:'User not found!'}));
-            });
-        });
-    }
-  } else if (request.method === "PUT") {
-      buildBody(request).then((body)=>{
-          dh.updateProduct(body).then(data => {
-              response.writeHead(200);
-              response.end(JSON.stringify({status:'Product updated!'}));
-          }).catch((status)=>{
-              response.writeHead(404);
-              response.end(JSON.stringify({status:'Product not found!'}));
+    } else if (paramObj.path === "login") {
+      buildBody(request).then((body) => {
+        dh.getUserByCredentials(body.email, body.password)
+          .then((data) => {
+            response.writeHead(200);
+            response.end(JSON.stringify(data));
+          })
+          .catch((status) => {
+            response.writeHead(404);
+            response.end(JSON.stringify({ status: "User not found!" }));
           });
       });
+    }
+  } else if (request.method === "PUT") {
+    buildBody(request).then((body) => {
+      dh.updateProduct(body)
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify({ status: "Product updated!" }));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "Product not found!" }));
+        });
+    });
   }
 }
 
