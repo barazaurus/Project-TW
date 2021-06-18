@@ -2,26 +2,27 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-html, body {
+  }
+  
+  html,
+  body {
     height: 100%;
-}
-
-body {
+  }
+  
+  body {
     color: #333;
     font-family: sans-serif;
     display: flex;
-}
-
-.opacityBackGround {
+  }
+  
+  .opacityBackGround {
     position: absolute;
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-}
-
-.basketPopUp {
+  }
+  
+  .basketPopUp {
     width: 800px;
     height: 400px;
     position: absolute;
@@ -37,25 +38,25 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-}
-
-.basket--flex-item {
+  }
+  
+  .basket--flex-item {
     margin: 10px;
-}
-
-.basket-item--content{
+  }
+  
+  .basket-item--content {
     display: flex;
     justify-content: space-between;
-}
-
-.item-content--flex{
+  }
+  
+  .item-content--flex {
     margin: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.btn-continueShopping {
+  }
+  
+  .btn-continueShopping {
     color: black;
     background-color: #e6e6e6;
     cursor: pointer;
@@ -67,15 +68,15 @@ body {
     margin-top: 1%;
     padding: 2px;
     margin-right: 10px;
-}
-
-.basket-item--content{
+  }
+  
+  .basket-item--content {
     position: relative;
     left: 15%;
     top: -100%;
-}
-
-.btn-checkout {
+  }
+  
+  .btn-checkout {
     color: white;
     background-color: #0a0a23;
     opacity: 0.85;
@@ -88,37 +89,63 @@ body {
     margin-top: 1%;
     border: 0;
     padding: 2px;
-}
-
-#basketPopUp--title {
+  }
+  
+  #basketPopUp--title {
     font-family: fantasy;
     font-size: xx-large;
     font-weight: 500;
-}
-
-.shop-body--content {
+  }
+  
+  .shop-body--content {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: none;
-}
-
-.shop-categories {
+    /* flex: none; */
+  }
+  
+  .shop-categories {
     height: 100%;
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     box-shadow: 10px 10px 40px 0 rgba(0, 0, 0, 0.1);
-}
-
-.products {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: space-evenly;
-}
-
-.top-rated--product {
+  }
+  
+  @media (max-width: 1920px) {
+    .products {
+      padding-top: 35%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+    }
+  }
+  
+  @media (max-width: 1400px) {
+    .products {
+      padding-top: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .products {
+      padding-top: 120%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+    }
+  }
+  
+  .top-rated--product {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -132,9 +159,9 @@ body {
     box-sizing: border-box;
     border-radius: 20px;
     box-shadow: 10px 10px 40px 0 rgba(0, 0, 0, 0.1);
-}
-
-.btn-buy {
+  }
+  
+  .btn-buy {
     width: 100%;
     text-decoration: none;
     outline: none;
@@ -144,58 +171,58 @@ body {
     font-size: 20px;
     background: #0a0a23;
     border-radius: 0px 0px 20px 20px;
-}
-
-.btn-buy:hover {
+  }
+  
+  .btn-buy:hover {
     opacity: 0.9;
     cursor: pointer;
-}
-
-.product-body {
+  }
+  
+  .product-body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-h2 {
+  }
+  
+  h2 {
     position: relative;
-}
-
-ul {
+  }
+  
+  ul {
     display: flex;
     flex-direction: column;
-}
-
-li {
+  }
+  
+  li {
     font-family: monospace;
     font-size: 20px;
     margin: 10px 0 0 0;
     padding: 0 20px 0 20px;
     cursor: pointer;
-}
-
-li:hover {
-    background: #e6e6e6
-}
-
-#item-name--title{
+  }
+  
+  li:hover {
+    background: #e6e6e6;
+  }
+  
+  #item-name--title {
     font-family: monospace;
     font-size: 25px;
     font-weight: bolder;
-}
-
-#item-price--title{
+  }
+  
+  #item-price--title {
     font-family: monospace;
     font-size: 25px;
     font-weight: bolder;
-}
-
-#item-quantity--input{
+  }
+  
+  #item-quantity--input {
     width: 20%;
-}
-
-#item-button--remove{
+  }
+  
+  #item-button--remove {
     color: white;
     background-color: rgba(255, 0, 0, 0.7);
     cursor: pointer;
@@ -210,4 +237,4 @@ li:hover {
     position: relative;
     top: 25px;
     right: 120px;
-}
+  }
