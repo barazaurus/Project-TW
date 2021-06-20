@@ -26,6 +26,8 @@ html, body {
     padding: 30px;
     border-radius: 5px;
     box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: -3%;
 }
 
 .wrapper .title-text {
@@ -217,4 +219,32 @@ form .btn input[type="submit"] {
 
     position: relative;
     left: 5%;
+}
+
+#register--signup-btn,
+#login-btn{
+    color: white;
+    z-index: 1;
+    background: -webkit-linear-gradient(right, #0a0a23, white, #0a0a23, white);
+    height: 100%;
+    width: 300%;
+    position: absolute;
+    left: -100%;
+    border-radius: 5px;
+    transition: all 0.4s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.fields-error{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    top: 100%;
+
+    color: white;
+    font-family: monospace;
 }
