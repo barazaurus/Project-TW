@@ -24,7 +24,7 @@ function createProduct(productObject) {
   productPrice.innerHTML = productObject.price;
   productTitlePrice.appendChild(productTitle);
   productTitlePrice.appendChild(productPrice);
-
+  
   let product = document.createElement("div");
   product.className = "top-rated--product";
   product.appendChild(productImage);
@@ -39,10 +39,15 @@ function createProduct(productObject) {
   product.appendChild(removeBtn);
   product.appendChild(editBtn);
   removeBtn.addEventListener("click", () => {
-    console.log('here');
-    fetch('http://localhost:8125/api/products',{method:'DELETE',body:JSON.stringify({product_id:productObject.product_id})}).then(resp => resp.json()).then(data =>{
-      console.log(data);
-    });
+    console.log("here");
+    fetch("http://localhost:8125/api/products", {
+      method: "DELETE",
+      body: JSON.stringify({ product_id: productObject.product_id }),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+      });
     product.remove();
   });
   editBtn.addEventListener("click",()=>{

@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+header-component {
+    z-index: 1;
+}
+
+body {
+    color: #333;
+    font-family: sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.basket-history {
+    width: 250px;
+    height: 300px;
+    position: relative;
+    margin: 80px 0 0 80px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 10px 10px 40px 0 rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+    flex-wrap: wrap;
+    padding: 0 10px 0 10px;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.basket-history--flex {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 2%;
+}
+
+.basket-history--flex:nth-child(1) {
+    justify-content: center;
+    margin-bottom: 5%;
+}
+
+.category-span {
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#header-title {
+    font-family: system-ui;
+    font-size: 20px;
+    font-weight: 700;
+}
