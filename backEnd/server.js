@@ -54,7 +54,10 @@ function serverHandler(request, response) {
   let paramObj = extractParams(request.url);
 
   response.setHeader("Access-Control-Allow-Origin", "*");
-  response.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT");
+  response.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST,GET,PUT,DELETE,PATCH"
+  );
   if (request.method === "GET") {
     if (paramObj.path === "products") {
       if (Object.keys(paramObj.query).length > 0) {
@@ -89,7 +92,7 @@ function serverHandler(request, response) {
   } else if (request.method === "POST") {
     if (paramObj.path === "products") {
       buildBody(request).then((body) => {
-        let path = "../images/" + body.name.replace(" ", "_") + '.jpeg';
+        let path = "../images/" + body.name.replace(" ", "_") + ".jpeg";
         writeImage(body.image, path);
         body.image = path;
         dh.addProduct(body)
@@ -104,8 +107,10 @@ function serverHandler(request, response) {
       });
     } else if (paramObj.path === "users") {
       buildBody(request).then((body) => {
+        body.type = 0;
         dh.registerUser(body)
           .then((data) => {
+            console.log('on reject');
             response.writeHead(200);
             response.end(JSON.stringify(data));
           })
@@ -131,8 +136,26 @@ function serverHandler(request, response) {
             response.end(JSON.stringify({ status: "User not found!" }));
           });
       });
+    } else if (paramObj.path === "admin") {
+      buildBody(request).then((body) => {
+        body.type = 1;
+        dh.registerUser(body)
+          .then((data) => {
+            response.writeHead(200);
+            response.end(JSON.stringify(data));
+          })
+          .catch((status) => {
+            if (status === 402) {
+              response.writeHead(402);
+              response.end(JSON.stringify({ status: "Email already used!" }));
+            } else {
+              response.writeHead(400);
+              response.end(JSON.stringify({ status: "Registration failed!" }));
+            }
+          });
+      });
     }
-  } else if (request.method === "PUT") {
+  } else if (request.method === "PATCH") {
     buildBody(request).then((body) => {
       dh.updateProduct(body)
         .then((data) => {
@@ -144,6 +167,36 @@ function serverHandler(request, response) {
           response.end(JSON.stringify({ status: "Product not found!" }));
         });
     });
+  } else if (request.method === "PUT") {
+    if (paramObj.path === "products") {
+      buildBody(request).then((body) => {
+        dh.updateProductData(body)
+          .then((status) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Product updated!" }));
+          })
+          .catch((status) => {
+            response.writeHead(400);
+            response.end(JSON.stringify({ status: "Product not updated!" }));
+          });
+      });
+    }
+  } else if (request.method === "DELETE") {
+    if (paramObj.path === "products") {
+      buildBody(request).then((body) => {
+        dh.deleteProduct(body)
+          .then((status) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Product deleted!" }));
+          })
+          .catch((status) => {
+            response.writeHead(400);
+            response.end(
+              JSON.stringify({ status: "Product not found or bad request!" })
+            );
+          });
+      });
+    }
   }
 }
 
