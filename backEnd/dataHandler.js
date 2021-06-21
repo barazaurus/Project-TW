@@ -124,13 +124,11 @@ class DataHandler {
 
   checkUserIfLoggedIn(token) {
     let sql = "select * from users where email = ?";
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve,reject) => {
       if (
         jwt.verify(token, "secret", (err, obj) => {
-          if (row === undefined) {
-            reject({ status: 403 });
-          }
-          this.db.get(sql, [obj.email], (err, row) => {
+          this.db.get(sql, [obj.email.email], (err,row) => {
+            console.log(row);
             if (row === undefined) {
               reject({ status: 404 });
             }
@@ -158,6 +156,19 @@ class DataHandler {
 
   getCommandHistory(user_id){
       //to be implemented...
+      let sql = "SELECT * FROM commands WHERE user_id = ?";
+      let dataObj = {};
+      return new Promise((resolve,reject)=>{
+        this.db.all(sql,[user_id],(err,rows)=>{
+          for(let i=0;i<rows.length;i++){
+            if(dataObj[rows[i].command_id] === undefined){
+              dataObj[rows[i].command_id] = [];
+            }
+            dataObj[rows[i].command_id].push(rows[i]);
+          }
+          resolve(dataObj);
+        });
+      });
   }
 
   //inserts
