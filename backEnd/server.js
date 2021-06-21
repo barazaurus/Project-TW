@@ -52,6 +52,7 @@ function serverHandler(request, response) {
   response.setHeader("Content-Type", "application/json");
   let dh = new DataHandler();
   let paramObj = extractParams(request.url);
+  console.log(paramObj);
 
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader(
@@ -88,6 +89,14 @@ function serverHandler(request, response) {
         });
       }
     } else if (paramObj.path === "users") {
+    } else if(paramObj.path === "login"){
+      dh.checkUserIfLoggedIn(paramObj.query.token).then(data => {
+        response.writeHead(200);
+        response.end(JSON.stringify(data));
+      }).catch((status)=>{
+        response.writeHead(404);
+        response.end(JSON.stringify({status:"Not Ok"}));
+      });
     }
   } else if (request.method === "POST") {
     if (paramObj.path === "products") {
@@ -126,6 +135,7 @@ function serverHandler(request, response) {
       });
     } else if (paramObj.path === "login") {
       buildBody(request).then((body) => {
+        console.log(body);
         dh.getUserByCredentials(body.email, body.password)
           .then((data) => {
             response.writeHead(200);
