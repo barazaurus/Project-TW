@@ -1,17 +1,15 @@
 const sqlite = require("sqlite3").verbose();
 const jwt = require("jsonwebtoken");
+const uniqid = require('uniqid');
 
 class DataHandler {
   constructor() {
-    this.db = new sqlite.Database(
-      "../dataBase/bahopa.db",
-      (err) => {
-        if (err) {
-          console.error(err.message);
-        }
-        console.log("Database connected!");
+    this.db = new sqlite.Database("../data/bahopa.db", (err) => {
+      if (err) {
+        console.error(err.message);
       }
-    );
+      console.log("Database connected!");
+    });
   }
 
   //utils
@@ -34,6 +32,16 @@ class DataHandler {
     userArr.push(object["password"]);
     userArr.push(object["type"]);
     return userArr;
+  }
+
+  buildCommand(object){
+      let commandArr = [];
+      //command_id,user_id,product_name,product_quantity,product_price
+      commandArr.push(object["command_id"]);
+      commandArr.push(object["user_id"]);
+      commandArr.push(object["product_name"]);
+      commandArr.push(object["product_quantity"]);
+      commandArr.push(object["product_price"]);
   }
 
   constructSqlCommand(searchObject) {
@@ -105,10 +113,10 @@ class DataHandler {
           reject(404);
         }
         resolve({
-            email:email,
-            username:row.username,
-            type:row.type,
-            token:this.generateToken({ email: email })
+          email: email,
+          username: row.username,
+          type: row.type,
+          token: this.generateToken({ email: email }),
         });
       });
     });
@@ -148,6 +156,10 @@ class DataHandler {
     });
   }
 
+  getCommandHistory(user_id){
+      //to be implemented...
+  }
+
   //inserts
   addProduct(product) {
     let sqlcmd =
@@ -162,10 +174,25 @@ class DataHandler {
     });
   }
 
+  addCommand(commands){
+      let sql = "INSERT INTO commands(command_id,user_id,product_name,product_quantity,product_price) VALUES(?,?,?,?,?)";
+      let number = 0;
+      let uid = uniqid();
+      for(let i=0;i<commands.length;i++){
+          commands[i]['command_id'] = uid;
+          this.db.run(sql,this.buildCommand(commands[i]),(err)=>{
+              number++;
+              if(number === commands.length){
+                  resolve(200);
+              }
+          });
+      }
+  }
+
   registerUser(user) {
-    let sqlcmd = "INSERT INTO users(email,username,password) VALUES(?,?,?)";
+    let sqlcmd = "INSERT INTO users(email,username,password,type) VALUES(?,?,?,?)";
     let superThis = this;
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve, reject) => {
       superThis
         .userAlreadyExist(user)
         .then((status) => {
@@ -195,6 +222,45 @@ class DataHandler {
           resolve(200);
         }
       );
+    });
+  }
+
+  updateProductData(updateObject) {
+    let sql = "UPDATE products SET ";
+    let values = [];
+    let num = 0;
+    for (let key in updateObject) {
+      if (key !== "product_id") {
+        if (num > 0) {
+          sql += ",";
+        }
+        sql += key + "=?";
+        values.push(updateObject[key]);
+        num++;
+      }
+    }
+    values.push(updateObject['product_id']);
+    sql += ' WHERE product_id = ?';
+    return new Promise((resolve,reject)=>{
+        this.db.run(sql,values,function(err){
+            if(err){
+                reject(400);
+            }
+            resolve(200);
+        });
+    });
+  }
+
+  //delete
+  deleteProduct(searchObject) {
+    let sql = "DELETE FROM products WHERE product_id = ?";
+    return new Promise((resolve, reject) => {
+      this.db.run(sql, [searchObject.product_id], function (err) {
+        if (err) {
+          reject(400);
+        }
+        resolve(200);
+      });
     });
   }
 }

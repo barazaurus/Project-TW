@@ -103,7 +103,7 @@ class Header extends HTMLElement {
 
 let test = headerTemplate.content.querySelector('#logout-btn');
 test.addEventListener('click', () => {
-  window.location.href = '/bahopa-FrontEnd/bahopa-app/app.html'
+  window.location.href = '/frontEnd/app.html'
 })
 
 customElements.define("header-component", Header);
