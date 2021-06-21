@@ -1,3 +1,4 @@
+//plain server
 const http = require("http");
 const path = require("path");
 const fs = require("fs");
@@ -49,6 +50,7 @@ function buildBody(req) {
 }
 
 function serverHandler(request, response) {
+  console.log("pe server" + request.method);
   response.setHeader("Content-Type", "application/json");
   let dh = new DataHandler();
   let paramObj = extractParams(request.url);
@@ -57,8 +59,10 @@ function serverHandler(request, response) {
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader(
     "Access-Control-Allow-Methods",
-    "POST,GET,PUT,DELETE,PATCH"
+    "POST,GET,PUT,DELETE,PATCH,OPTIONS"
   );
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Access-Control-Max-Age", "86400");
   if (request.method === "GET") {
     if (paramObj.path === "products") {
       if (Object.keys(paramObj.query).length > 0) {
@@ -89,14 +93,18 @@ function serverHandler(request, response) {
         });
       }
     } else if (paramObj.path === "users") {
-    } else if(paramObj.path === "login"){
-      dh.checkUserIfLoggedIn(paramObj.query.token).then(data => {
-        response.writeHead(200);
-        response.end(JSON.stringify(data));
-      }).catch((status)=>{
-        response.writeHead(404);
-        response.end(JSON.stringify({status:"Not Ok"}));
-      });
+
+    } else if (paramObj.path === "login") {
+      dh.checkUserIfLoggedIn(paramObj.query.token)
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "Not Ok" }));
+        });
+    } else if (paramObj.path === "commands") {
     }
   } else if (request.method === "POST") {
     if (paramObj.path === "products") {
@@ -119,7 +127,7 @@ function serverHandler(request, response) {
         body.type = 0;
         dh.registerUser(body)
           .then((data) => {
-            console.log('on reject');
+            console.log("on reject");
             response.writeHead(200);
             response.end(JSON.stringify(data));
           })
@@ -162,6 +170,18 @@ function serverHandler(request, response) {
               response.writeHead(400);
               response.end(JSON.stringify({ status: "Registration failed!" }));
             }
+          });
+      });
+    } else if (paramObj.path === "commands") {
+      buildBody(request).then((body) => {
+        dh.addCommand(body)
+          .then((data) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Commands Inserted!" }));
+          })
+          .catch((status) => {
+            response.writeHead(400);
+            response.end(JSON.stringify({ status: "Bad request!" }));
           });
       });
     }

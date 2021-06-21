@@ -21,6 +21,15 @@ var userRegisterCredentials = {
   password: "",
 };
 
+
+var userAfterLogin = {
+  email: "",
+  username: "",
+  password: "",
+  token: "",
+};
+
+
 var userLoginEmail = document.getElementById("login--email-field");
 var userLoginPassword = document.getElementById("login--password-field");
 var loginButton = document.getElementById("login-btn");
@@ -32,6 +41,7 @@ var userRegisterConfirmPassword = document.getElementById(
 var signUpButton = document.getElementById("register--signup-btn");
 var emailError = document.getElementById("err-email");
 var passwordError = document.getElementById("err-password");
+var loginError = document.getElementById("err-login");
 
 function getLoginValuesFromInput() {
   this.userLoginCredentials.email = userLoginEmail.value;
@@ -44,6 +54,7 @@ function getRegisterValuesFromInput() {
   this.userRegisterCredentialsFromInput.confirmPassword =
     userRegisterConfirmPassword.value;
 }
+
 
 function parseRegisterValuesFromInput() {
   this.userRegisterCredentials.email = this.userRegisterCredentialsFromInput.email;
@@ -79,7 +90,12 @@ function checkMatchingPasswords() {
 function checkFieldIsNotNull() {
   if (userRegisterEmail.value === null || userRegisterEmail.value === undefined)
     return false;
-  if (userRegisterPassword.value === null || userRegisterPassword.value === undefined)
+
+  if (
+    userRegisterPassword.value === null ||
+    userRegisterPassword.value === undefined
+  )
+
     return false;
   if (
     userRegisterConfirmPassword.value === null ||
@@ -110,6 +126,29 @@ function checkIsFormValid() {
 async function postUserLoginCredentials(url = "", data = {}) {
   const response = await fetch(url, {
     method: "POST",
+    body: JSON.stringify(data),
+  });
+  if (response.status == "404") {
+    this.loginError.style.color = "red";
+  } else {
+    this.loginError.style.color = "white";
+
+    window.location.href = "./components/home-page/home.html";
+  }
+  return response.json();
+}
+
+async function postUserRegisterCredentials(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+async function checkUserCredentials(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "GET",
     body: JSON.stringify(data),
   });
   return response.json();
@@ -146,14 +185,12 @@ function registerUser() {
   });
 }
 
+
 function checkCredentialsExistsInDB() {
   getLoginValuesFromInput();
-    checkUserCredentials(
-      CHECK_LOGIN_URL,
-      this.userLoginCredentials
-    ).then(() => {
-      return true;
-    });
+  checkUserCredentials(CHECK_LOGIN_URL, this.userLoginCredentials).then(() => {
+    return true;
+  });
 }
 
 function loginUser() {
@@ -161,15 +198,15 @@ function loginUser() {
     getLoginValuesFromInput();
     if (checkLoginFieldsAreNotNull()) {
       postUserLoginCredentials(LOGIN_URL, this.userLoginCredentials).then(
-        (data) => {
-          console.log(data);
+        (user) => {
+          this.userAfterLogin.email = user.email;
+          this.userAfterLogin.username = user.username;
+          this.userAfterLogin.password = user.password;
+          this.userAfterLogin.token = user.token;
         }
       );
-    } else {
-      console.log("user doesn't exist");
     }
   });
 }
-
 loginUser();
 registerUser();
