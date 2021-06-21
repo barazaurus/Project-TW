@@ -8,6 +8,7 @@ let product = {
   quantity: 3,
   visits: 5,
 };
+let shoppingCart = [];
 
 function createProduct(productObject) {
   let productImage = document.createElement("img");
@@ -28,7 +29,9 @@ function createProduct(productObject) {
   let productBuyButton = document.createElement("button");
   productBuyButton.className = "btn-buy";
   productBuyButton.innerHTML = `BUY <i class="fa fa-shopping-cart"></i>`;
-  productBuyButton.addEventListener("click", openBasketShopping);
+  productBuyButton.addEventListener("click", () => {
+    openBasketShopping(productObject);
+  });
 
   let product = document.createElement("div");
   product.className = "top-rated--product";
@@ -40,7 +43,8 @@ function createProduct(productObject) {
   return product;
 }
 
-function openBasketShopping() {
+function openBasketShopping(productObject) {
+  shoppingCart.push(productObject);
   let opacityBackground = document.createElement("div");
   opacityBackground.className = "opacityBackGround";
 
@@ -56,50 +60,53 @@ function openBasketShopping() {
 
   let basketBody = document.createElement("div");
   basketBody.className = "basket--flex-item";
-  let basketBodyItem = document.createElement("div");
-  basketBodyItem.className = "basket-item--content";
-
-  let basketBodyItemNameDiv = document.createElement("div");
-  let basketBodyItemNameTitle = document.createElement("span");
-  let basketBodyItemName = document.createElement("span");
-  basketBodyItemNameDiv.className = "item-content--flex";
-  basketBodyItemNameTitle.innerHTML = "Name";
-  basketBodyItemNameTitle.id = "item-name--title";
-  basketBodyItemNameDiv.appendChild(basketBodyItemNameTitle);
-  basketBodyItemNameDiv.appendChild(basketBodyItemName);
-
-  let basketBodyItemPriceDiv = document.createElement("div");
-  let basketBodyItemPriceTitle = document.createElement("span");
-  let basketBodyItemPrice = document.createElement("span");
-  basketBodyItemPriceDiv.className = "item-content--flex";
-  basketBodyItemPriceTitle.id = "item-price--title";
-  basketBodyItemPriceTitle.innerHTML = "Price";
   basketBodyItemPriceDiv.appendChild(basketBodyItemPriceTitle);
   basketBodyItemPriceDiv.appendChild(basketBodyItemPrice);
+  //begin
+  for (let i = 0; i < shoppingCart.length; i++) {
+    let basketBodyItem = document.createElement("div");
+    basketBodyItem.className = "basket-item--content";
+    let basketBodyItemNameDiv = document.createElement("div");
+    let basketBodyItemNameTitle = document.createElement("span");
+    let basketBodyItemName = document.createElement("span");
+    basketBodyItemNameDiv.className = "item-content--flex";
+    basketBodyItemNameTitle.innerHTML = "Name";
+    basketBodyItemNameTitle.id = "item-name--title";
+    basketBodyItemNameDiv.appendChild(basketBodyItemNameTitle);
+    basketBodyItemNameDiv.appendChild(basketBodyItemName);
 
-  let basketBodyItemQuantityDiv = document.createElement("div");
-  let basketBodyItemQuantityTitle = document.createElement("span");
-  let basketBodyItemQuantity = document.createElement("input");
-  basketBodyItemQuantityDiv.className = "item-content--flex";
-  basketBodyItemQuantity.id = "item-quantity--input";
-  basketBodyItemQuantityDiv.appendChild(basketBodyItemQuantityTitle);
-  basketBodyItemQuantityDiv.appendChild(basketBodyItemQuantity);
+    let basketBodyItemPriceDiv = document.createElement("div");
+    let basketBodyItemPriceTitle = document.createElement("span");
+    let basketBodyItemPrice = document.createElement("span");
+    basketBodyItemPriceDiv.className = "item-content--flex";
+    basketBodyItemPriceTitle.id = "item-price--title";
+    basketBodyItemPriceTitle.innerHTML = "Price";
 
-  let basketBodyItemRemove = document.createElement("button");
-  basketBodyItemRemove.id = "item-button--remove";
-  basketBodyItemRemove.addEventListener("click", () => {
-    removeProductFromBasket(basketBodyItem);
-  });
-  basketBodyItemName.innerHTML = product.name;
-  basketBodyItemPrice.innerHTML = product.price;
-  basketBodyItemQuantity.type = "number";
-  basketBodyItemQuantity.value = 1;
-  basketBodyItemRemove.innerHTML = "Remove";
-  basketBodyItem.appendChild(basketBodyItemNameDiv);
-  basketBodyItem.appendChild(basketBodyItemPriceDiv);
-  basketBodyItem.appendChild(basketBodyItemQuantityDiv);
-  basketBodyItem.appendChild(basketBodyItemRemove);
-  basketBody.appendChild(basketBodyItem);
+    let basketBodyItemQuantityDiv = document.createElement("div");
+    let basketBodyItemQuantityTitle = document.createElement("span");
+    let basketBodyItemQuantity = document.createElement("input");
+    basketBodyItemQuantityDiv.className = "item-content--flex";
+    basketBodyItemQuantity.id = "item-quantity--input";
+    basketBodyItemQuantityDiv.appendChild(basketBodyItemQuantityTitle);
+    basketBodyItemQuantityDiv.appendChild(basketBodyItemQuantity);
+
+    let basketBodyItemRemove = document.createElement("button");
+    basketBodyItemRemove.id = "item-button--remove";
+    basketBodyItemRemove.addEventListener("click", () => {
+      removeProductFromBasket(basketBodyItem);
+    });
+    basketBodyItemName.innerHTML = shoppingCart[i].name;
+    basketBodyItemPrice.innerHTML = shoppingCart[i].price;
+    basketBodyItemQuantity.type = "number";
+    basketBodyItemQuantity.value = 1;
+    basketBodyItemRemove.innerHTML = "Remove";
+    basketBodyItem.appendChild(basketBodyItemNameDiv);
+    basketBodyItem.appendChild(basketBodyItemPriceDiv);
+    basketBodyItem.appendChild(basketBodyItemQuantityDiv);
+    basketBodyItem.appendChild(basketBodyItemRemove);
+    basketBody.appendChild(basketBodyItem);
+  }
+  //ending
 
   let basketFooter = document.createElement("div");
   basketFooter.className = "basket--flex-item";

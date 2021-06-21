@@ -25,11 +25,6 @@ function createProduct(productObject) {
   productTitlePrice.appendChild(productTitle);
   productTitlePrice.appendChild(productPrice);
 
-  // let productBuyButton = document.createElement("button");
-  // productBuyButton.className = "btn-buy";
-  // productBuyButton.innerHTML = `BUY <i class="fa fa-shopping-cart"></i>`;
-  // productBuyButton.addEventListener("click", openBasketShopping);
-
   let product = document.createElement("div");
   product.className = "top-rated--product";
   product.appendChild(productImage);
@@ -45,9 +40,13 @@ function createProduct(productObject) {
   product.appendChild(editBtn);
   removeBtn.addEventListener("click", () => {
     console.log('here');
-    deleteProductFromDB(DELETE_PRODUCT_URL, {product_id: productObject.product_id}).then(() =>
-      console.log('mama')
-    );
+    fetch('http://localhost:8125/api/products',{method:'DELETE',body:JSON.stringify({product_id:productObject.product_id})}).then(resp => resp.json()).then(data =>{
+      console.log(data);
+    });
+    product.remove();
+  });
+  editBtn.addEventListener("click",()=>{
+    window.location.href = "../../components/admin-edit/admin-edit.html?id=" + productObject.product_id;
   });
   document.querySelector(".products").appendChild(product);
 }
@@ -153,14 +152,7 @@ fetch("http://localhost:8125/api/products")
 
 async function deleteProductFromDB(url = "", data = {}) {
   const response = await fetch(url, {
-    method: "DELETE",
-    mode: 'cors',
-    cache: 'no-cache',
-    headers:{
-      'content-type' : 'application/json'
-    },
-    credentials: 'same-origin',
-    referrerPolicy: 'no-referrer',
+    method: "PUT",
     body: JSON.stringify(data),
   });
   return response.json();

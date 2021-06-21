@@ -44,13 +44,17 @@ body {
   margin: 10px;
 }
 
+.basket--flex-item:nth-child(2){
+  padding-top:10px;
+}
+
 .basket-item--content {
   display: flex;
   justify-content: space-between;
 }
 
 .item-content--flex {
-  margin: 10px;
+  /* margin: 10px; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
