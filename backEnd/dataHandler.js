@@ -4,7 +4,7 @@ const uniqid = require('uniqid');
 
 class DataHandler {
   constructor() {
-    this.db = new sqlite.Database("../data/bahopa.db", (err) => {
+    this.db = new sqlite.Database("../dataBase/bahopa.db", (err) => {
       if (err) {
         console.error(err.message);
       }
