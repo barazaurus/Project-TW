@@ -60,8 +60,7 @@ function openBasketShopping(productObject) {
 
   let basketBody = document.createElement("div");
   basketBody.className = "basket--flex-item";
-  basketBodyItemPriceDiv.appendChild(basketBodyItemPriceTitle);
-  basketBodyItemPriceDiv.appendChild(basketBodyItemPrice);
+
   //begin
   for (let i = 0; i < shoppingCart.length; i++) {
     let basketBodyItem = document.createElement("div");
@@ -81,6 +80,8 @@ function openBasketShopping(productObject) {
     basketBodyItemPriceDiv.className = "item-content--flex";
     basketBodyItemPriceTitle.id = "item-price--title";
     basketBodyItemPriceTitle.innerHTML = "Price";
+    basketBodyItemPriceDiv.appendChild(basketBodyItemPriceTitle);
+    basketBodyItemPriceDiv.appendChild(basketBodyItemPrice);
 
     let basketBodyItemQuantityDiv = document.createElement("div");
     let basketBodyItemQuantityTitle = document.createElement("span");
@@ -93,6 +94,8 @@ function openBasketShopping(productObject) {
     let basketBodyItemRemove = document.createElement("button");
     basketBodyItemRemove.id = "item-button--remove";
     basketBodyItemRemove.addEventListener("click", () => {
+      console.log(localStorage.getItem('userEmail'));
+      console.log(localStorage.getItem('userToken'));
       removeProductFromBasket(basketBodyItem);
     });
     basketBodyItemName.innerHTML = shoppingCart[i].name;

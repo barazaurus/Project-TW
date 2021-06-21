@@ -21,14 +21,12 @@ var userRegisterCredentials = {
   password: "",
 };
 
-
 var userAfterLogin = {
   email: "",
   username: "",
   password: "",
   token: "",
 };
-
 
 var userLoginEmail = document.getElementById("login--email-field");
 var userLoginPassword = document.getElementById("login--password-field");
@@ -54,7 +52,6 @@ function getRegisterValuesFromInput() {
   this.userRegisterCredentialsFromInput.confirmPassword =
     userRegisterConfirmPassword.value;
 }
-
 
 function parseRegisterValuesFromInput() {
   this.userRegisterCredentials.email = this.userRegisterCredentialsFromInput.email;
@@ -90,12 +87,10 @@ function checkMatchingPasswords() {
 function checkFieldIsNotNull() {
   if (userRegisterEmail.value === null || userRegisterEmail.value === undefined)
     return false;
-
   if (
     userRegisterPassword.value === null ||
     userRegisterPassword.value === undefined
   )
-
     return false;
   if (
     userRegisterConfirmPassword.value === null ||
@@ -154,22 +149,6 @@ async function checkUserCredentials(url = "", data = {}) {
   return response.json();
 }
 
-async function postUserRegisterCredentials(url = "", data = {}) {
-  const response = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-  return response.json();
-}
-
-async function checkUserCredentials(url = "", data = {}) {
-  const response = await fetch(url, {
-    method: "GET",
-    body: JSON.stringify(data),
-  });
-  return response.json();
-}
-
 function registerUser() {
   signUpButton.addEventListener("click", () => {
     getRegisterValuesFromInput();
@@ -184,7 +163,6 @@ function registerUser() {
     }
   });
 }
-
 
 function checkCredentialsExistsInDB() {
   getLoginValuesFromInput();
@@ -203,10 +181,14 @@ function loginUser() {
           this.userAfterLogin.username = user.username;
           this.userAfterLogin.password = user.password;
           this.userAfterLogin.token = user.token;
+
+          localStorage.setItem('userEmail', user.email);
+          localStorage.setItem('userToken', user.token)
         }
       );
     }
   });
 }
+
 loginUser();
 registerUser();
