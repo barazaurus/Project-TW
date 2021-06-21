@@ -1,15 +1,18 @@
 const sqlite = require("sqlite3").verbose();
 const jwt = require("jsonwebtoken");
-const uniqid = require('uniqid');
+const uniqid = require("uniqid");
 
 class DataHandler {
   constructor() {
-    this.db = new sqlite.Database("../dataBase/bahopa.db", (err) => {
-      if (err) {
-        console.error(err.message);
+    this.db = new sqlite.Database(
+      "../data/bahopa.db",
+      (err) => {
+        if (err) {
+          console.error(err.message);
+        }
+        console.log("Database connected!");
       }
-      console.log("Database connected!");
-    });
+    );
   }
 
   //utils
@@ -34,14 +37,14 @@ class DataHandler {
     return userArr;
   }
 
-  buildCommand(object){
-      let commandArr = [];
-      //command_id,user_id,product_name,product_quantity,product_price
-      commandArr.push(object["command_id"]);
-      commandArr.push(object["user_id"]);
-      commandArr.push(object["product_name"]);
-      commandArr.push(object["product_quantity"]);
-      commandArr.push(object["product_price"]);
+  buildCommand(object) {
+    let commandArr = [];
+    //command_id,user_id,product_name,product_quantity,product_price
+    commandArr.push(object["command_id"]);
+    commandArr.push(object["user_id"]);
+    commandArr.push(object["product_name"]);
+    commandArr.push(object["product_quantity"]);
+    commandArr.push(object["product_price"]);
   }
 
   constructSqlCommand(searchObject) {
@@ -74,8 +77,9 @@ class DataHandler {
       this.db.all(sql, [], (err, rows) => {
         if (err) {
           reject(404);
+        } else {
+          resolve(rows);
         }
-        resolve(rows);
       });
     });
   }
@@ -87,8 +91,9 @@ class DataHandler {
       this.db.all(sql, parameters, (err, rows) => {
         if (err) {
           reject(404);
+        } else {
+          resolve(rows);
         }
-        resolve(rows);
       });
     });
   }
@@ -99,8 +104,9 @@ class DataHandler {
       this.db.get(sql, [product_id], (err, row) => {
         if (err) {
           reject(404);
+        } else {
+          resolve(row);
         }
-        resolve(row);
       });
     });
   }
@@ -108,31 +114,37 @@ class DataHandler {
   getUserByCredentials(email, password) {
     let sql = "select * from users where email = ? and password = ?";
     return new Promise((resolve, reject) => {
-      this.db.get(sql, [email, password], (err, row) => {
-        if (row === undefined) {
-          reject(404);
+      this.db.get(
+        sql,
+        [email, password],
+        (err, row) => {
+          if (row === undefined) {
+            reject(400);
+          } else {
+            resolve({
+              email: email,
+              username: row.username,
+              type: row.type,
+              token: this.generateToken({ email: email }),
+            });
+          }
         }
-        resolve({
-          email: email,
-          username: row.username,
-          type: row.type,
-          token: this.generateToken({ email: email }),
-        });
-      });
+      );
     });
   }
 
   checkUserIfLoggedIn(token) {
     let sql = "select * from users where email = ?";
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       if (
         jwt.verify(token, "secret", (err, obj) => {
-          this.db.get(sql, [obj.email.email], (err,row) => {
+          this.db.get(sql, [obj.email.email], (err, row) => {
             console.log(row);
             if (row === undefined) {
               reject({ status: 404 });
+            } else {
+              resolve(row);
             }
-            resolve(row);
           });
         })
       );
@@ -145,23 +157,23 @@ class DataHandler {
       this.db.get(sql, [user.email], function (err, row) {
         if (err) {
           reject(false);
-        }
-        if (row === undefined) {
+        } else if (row === undefined) {
           reject(false);
+        } else {
+          resolve(true);
         }
-        resolve(true);
       });
     });
   }
 
-  getCommandHistory(user_id){
-      //to be implemented...
-      let sql = "SELECT * FROM commands WHERE user_id = ?";
-      let dataObj = {};
-      return new Promise((resolve,reject)=>{
-        this.db.all(sql,[user_id],(err,rows)=>{
-          for(let i=0;i<rows.length;i++){
-            if(dataObj[rows[i].command_id] === undefined){
+  getCommandHistory(token) {
+    let sql = "SELECT * FROM commands WHERE email = ?";
+    let dataObj = {};
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, "secret", (err, obj) => {
+        this.db.all(sql, [obj.email.email], (err, rows) => {
+          for (let i = 0; i < rows.length; i++) {
+            if (dataObj[rows[i].command_id] === undefined) {
               dataObj[rows[i].command_id] = [];
             }
             dataObj[rows[i].command_id].push(rows[i]);
@@ -169,6 +181,7 @@ class DataHandler {
           resolve(dataObj);
         });
       });
+    });
   }
 
   //inserts
@@ -179,29 +192,37 @@ class DataHandler {
       this.db.run(sqlcmd, this.buildProduct(product), function (err) {
         if (err) {
           reject(400);
+        } else {
+          resolve(200);
         }
-        resolve(200);
       });
     });
   }
 
-  addCommand(commands){
-      let sql = "INSERT INTO commands(command_id,user_id,product_name,product_quantity,product_price) VALUES(?,?,?,?,?)";
-      let number = 0;
-      let uid = uniqid();
-      for(let i=0;i<commands.length;i++){
-          commands[i]['command_id'] = uid;
-          this.db.run(sql,this.buildCommand(commands[i]),(err)=>{
-              number++;
-              if(number === commands.length){
-                  resolve(200);
-              }
-          });
+  addCommand(commands) {
+    let sql =
+      "INSERT INTO commands(command_id,email,product_name,product_quantity,product_price) VALUES(?,?,?,?,?)";
+    let number = 0;
+    let uid = uniqid();
+    return new Promise((resolve, reject) => {
+      for (let i = 0; i < commands.length; i++) {
+        commands[i]["command_id"] = uid;
+        this.db.run(sql, this.buildCommand(commands[i]), (err) => {
+          number++;
+          if (err) {
+            reject(400);
+          }
+          if (number === commands.length) {
+            resolve(200);
+          }
+        });
       }
+    });
   }
 
   registerUser(user) {
-    let sqlcmd = "INSERT INTO users(email,username,password,type) VALUES(?,?,?,?)";
+    let sqlcmd =
+      "INSERT INTO users(email,username,password,type) VALUES(?,?,?,?)";
     let superThis = this;
     return new Promise((resolve, reject) => {
       superThis
@@ -213,8 +234,9 @@ class DataHandler {
           this.db.run(sqlcmd, this.buildUser(user), function (err) {
             if (err) {
               reject(400);
+            } else {
+              resolve(user);
             }
-            resolve(user);
           });
         });
     });
@@ -229,8 +251,9 @@ class DataHandler {
         function (err) {
           if (err) {
             reject(400);
+          } else {
+            resolve(200);
           }
-          resolve(200);
         }
       );
     });
@@ -250,15 +273,18 @@ class DataHandler {
         num++;
       }
     }
-    values.push(updateObject['product_id']);
-    sql += ' WHERE product_id = ?';
-    return new Promise((resolve,reject)=>{
-        this.db.run(sql,values,function(err){
-            if(err){
-                reject(400);
-            }
-            resolve(200);
-        });
+    values.push(updateObject["product_id"]);
+    sql += " WHERE product_id = ?";
+    console.log(sql);
+    console.log(values);
+    return new Promise((resolve, reject) => {
+      this.db.run(sql, values, function (err) {
+        if (err) {
+          reject(400);
+        } else {
+          resolve(200);
+        }
+      });
     });
   }
 
@@ -269,8 +295,9 @@ class DataHandler {
       this.db.run(sql, [searchObject.product_id], function (err) {
         if (err) {
           reject(400);
+        } else {
+          resolve(200);
         }
-        resolve(200);
       });
     });
   }
