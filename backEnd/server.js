@@ -93,6 +93,7 @@ function serverHandler(request, response) {
         });
       }
     } else if (paramObj.path === "users") {
+
     } else if (paramObj.path === "login") {
       dh.checkUserIfLoggedIn(paramObj.query.token)
         .then((data) => {
