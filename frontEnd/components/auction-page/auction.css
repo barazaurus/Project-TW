@@ -19,6 +19,89 @@ main {
     flex: 1 0 auto;
 }
 
-p{
-    color: red;
+.top-rated--product {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 500px;
+    width: 300px;
+    border: 1px solid black;
+    background: white;
+    margin: 0 80px 20px 80px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    border-radius: 20px;
+    box-shadow: 10px 10px 40px 0 rgba(0, 0, 0, 0.1);
+
+    position: absolute;
+    left: 35%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
+
+.btn-buy{
+    margin-left: 10px;
+    text-decoration: none;
+    outline: none;
+    border: 0;
+    color: white;
+    font-family: cursive;
+    font-size: 18px;
+    background: #0a0a23;
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.btn-buy:hover{
+    opacity: 0.5;
+}
+
+.product-footer{
+    margin: 10px;
+}
+
+.users-top--bids{
+    border: 1px solid black;
+    height: 500px;
+    width: 300px;
+}
+
+.users-top--bids{
+    position: absolute;
+    left: 60%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    overflow-y: hidden;
+}
+
+::-webkit-scrollbar {
+    background: transparent;
+}
+
+.table-content--categories{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    font-size: 20px;
+    font-family: monospace;
+}
+.table-content--userRow{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    font-size: 20px;
+    font-family: serif;
+}
+
+@media only screen and (max-width: 1500px) {
+    .users-top--bids{
+        position: absolute;
+        left: 41%;
+        top: 110%;
+        transform: translate(-50%, -50%);
+    }
+  }

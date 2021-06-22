@@ -222,7 +222,7 @@ class DataHandler {
   }
 
   getAllBids() {
-    let sql = "select * from licitatie";
+    let sql = "select * from licitatie ORDER BY bid DESC";
     return new Promise((resolve, reject) => {
       this.db.all(sql, [], (err, rows) => {
         if (err) {
@@ -251,12 +251,58 @@ class DataHandler {
     let sql = "INSERT INTO licitatie(email,bid) VALUES(?,?)";
     return new Promise((resolve, reject) => {
       this.db.run(sql, [bidObject.email, bidObject.bid], (err) => {
-        if (err) {
+        if (err) {   
+       reject(400);
+        } else {
+          resolve(200);
+        }
+      });
+    });
+  }
+
+  bidProduct(productObject){
+    let sql = "INSERT INTO bided(product_id) VALUES(?)";
+    return new Promise((resolve,reject)=>{
+      this.db.run(sql,[productObject.product_id],(err)=>{
+        if(err){
+
           reject(400);
         } else {
           resolve(200);
         }
       });
+    });
+  }
+
+  getBidProduct(){
+    let sql = "SELECT * FROM bided";
+    return new Promise((resolve,reject)=>{
+      this.db.get(sql,[],(err,row)=>{
+        if(err || row === undefined){
+          reject(404);
+        }else{
+          this.db.get("SELECT * FROM products WHERE product_id = ?",[row.product_id],(err,row)=>{
+            if(err || row === undefined){
+              reject(404);
+            }else{
+              resolve(row);
+            }
+          });
+        }
+      });
+    });
+  }
+
+  clearBidProduct(){
+    let sql = "DELETE FROM bided";
+    return new Promise((resolve,reject)=>{
+      this.db.run(sql,[],(err)=>{
+        if(err){
+          reject(400);
+        }else{
+          resolve(200);
+        }
+      })
     });
   }
 
