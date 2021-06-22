@@ -4,15 +4,12 @@ const uniqid = require("uniqid");
 
 class DataHandler {
   constructor() {
-    this.db = new sqlite.Database(
-      "../data/bahopa.db",
-      (err) => {
-        if (err) {
-          console.error(err.message);
-        }
-        console.log("Database connected!");
+    this.db = new sqlite.Database("../data/bahopa.db", (err) => {
+      if (err) {
+        console.error(err.message);
       }
-    );
+      console.log("Database connected!");
+    });
   }
 
   //utils
@@ -115,22 +112,18 @@ class DataHandler {
   getUserByCredentials(email, password) {
     let sql = "select * from users where email = ? and password = ?";
     return new Promise((resolve, reject) => {
-      this.db.get(
-        sql,
-        [email, password],
-        (err, row) => {
-          if (row === undefined) {
-            reject(400);
-          } else {
-            resolve({
-              email: email,
-              username: row.username,
-              type: row.type,
-              token: this.generateToken({ email: email }),
-            });
-          }
+      this.db.get(sql, [email, password], (err, row) => {
+        if (row === undefined) {
+          reject(400);
+        } else {
+          resolve({
+            email: email,
+            username: row.username,
+            type: row.type,
+            token: this.generateToken({ email: email }),
+          });
         }
-      );
+      });
     });
   }
 
@@ -200,8 +193,107 @@ class DataHandler {
     });
   }
 
-  clearBids(){
+  clearBids() {
     let sql = "delete from licitatie";
+    return new Promise((resolve, reject) => {
+      this.db.run(sql, [], (err) => {
+        if (err) {
+          reject(400);
+        } else {
+          resolve(200);
+        }
+      });
+    });
+  }
+
+  getBestBid() {
+    let sql =
+      "select * from licitatie where bid = (select MAX(bid) from licitatie)";
+    return new Promise((resolve, reject) => {
+      this.db.get(sql, [], (err, row) => {
+        console.log(row);
+        if (err || row === undefined) {
+          reject(400);
+        } else {
+          resolve(row);
+        }
+      });
+    });
+  }
+
+  getAllBids() {
+    let sql = "select * from licitatie ORDER BY bid DESC";
+    return new Promise((resolve, reject) => {
+      this.db.all(sql, [], (err, rows) => {
+        if (err) {
+          reject(200);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+  }
+
+  getMostVisitedProducts() {
+    let sql = "SELECT * FROM products ORDER BY visits DESC LIMIT 3";
+    return new Promise((resolve, reject) => {
+      this.db.all(sql, [], (err, rows) => {
+        if (err) {
+          reject(200);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+  }
+
+  addBid(bidObject) {
+    let sql = "INSERT INTO licitatie(email,bid) VALUES(?,?)";
+    return new Promise((resolve, reject) => {
+      this.db.run(sql, [bidObject.email, bidObject.bid], (err) => {
+        if (err) {
+          reject(400);
+        } else {
+          resolve(200);
+        }
+      });
+    });
+  }
+
+  bidProduct(productObject){
+    let sql = "INSERT INTO bided(product_id) VALUES(?)";
+    return new Promise((resolve,reject)=>{
+      this.db.run(sql,[productObject.product_id],(err)=>{
+        if(err){
+          reject(400);
+        }else{
+          resolve(200);
+        }
+      });
+    });
+  }
+
+  getBidProduct(){
+    let sql = "SELECT * FROM bided";
+    return new Promise((resolve,reject)=>{
+      this.db.get(sql,[],(err,row)=>{
+        if(err || row === undefined){
+          reject(404);
+        }else{
+          this.db.get("SELECT * FROM products WHERE product_id = ?",[row.product_id],(err,row)=>{
+            if(err || row === undefined){
+              reject(404);
+            }else{
+              resolve(row);
+            }
+          });
+        }
+      });
+    });
+  }
+
+  clearBidProduct(){
+    let sql = "DELETE FROM bided";
     return new Promise((resolve,reject)=>{
       this.db.run(sql,[],(err)=>{
         if(err){
@@ -209,48 +301,7 @@ class DataHandler {
         }else{
           resolve(200);
         }
-      });
-    });
-  }
-
-  getBestBid(){
-    let sql = "select * from licitatie where bid = (select MAX(bid) from licitatie)";
-    return new Promise((resolve,reject)=>{
-      this.db.get(sql,[],(err,row)=>{
-        console.log(row);
-        if(err || row === undefined){
-          reject(400);
-        }else{
-          resolve(row);
-        }
-      });
-    });
-  }
-
-  getAllBids(){
-    let sql = "select * from licitatie";
-    return new Promise((resolve,reject)=>{
-      this.db.all(sql,[],(err,rows)=>{
-        if(err){
-          reject(200);
-        }
-        else{
-          resolve(rows);
-        }
-      });
-    });
-  }
-
-  addBid(bidObject){
-    let sql = "INSERT INTO licitatie(email,bid) VALUES(?,?)";
-    return new Promise((resolve,reject)=>{
-      this.db.run(sql,[bidObject.email,bidObject.bid],(err)=>{
-        if(err){
-          reject(400);
-        }else{
-          resolve(200);
-        }
-      });
+      })
     });
   }
 
@@ -273,6 +324,30 @@ class DataHandler {
           }
         });
       }
+    });
+  }
+
+  updateVisits(productObject) {
+    let sql = "SELECT * FROM products WHERE product_id = ?";
+    return new Promise((resolve, reject) => {
+      this.db.get(sql, [productObject.product_id], (err, row) => {
+        let sqlcmd = "UPDATE products SET visits = ?  WHERE product_id = ?";
+        if (err || row === undefined) {
+          reject(400);
+        } else {
+          this.db.run(
+            sqlcmd,
+            [row.visits + 1, productObject.product_id],
+            (err) => {
+              if (err) {
+                reject(400);
+              } else {
+                resolve(200);
+              }
+            }
+          );
+        }
+      });
     });
   }
 
@@ -358,6 +433,4 @@ class DataHandler {
     });
   }
 }
-
-
 module.exports.DataHandler = DataHandler;
