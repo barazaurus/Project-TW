@@ -44,7 +44,24 @@ function createProduct(productObject) {
 }
 
 function openBasketShopping(productObject) {
-  shoppingCart.push(productObject);
+  //command_id,email,product_name,product_quantity,product_price
+  let tempObject = {
+    email: "lili@gmail.com",
+    product_name: productObject.name,
+    product_quantity: 1,
+    product_price: productObject.price,
+  };
+  let foundEl = false;
+  for (let i = 0; i < shoppingCart.length; i++) {
+    if (shoppingCart[i].product_name === tempObject.product_name) {
+      shoppingCart[i].product_quantity += tempObject.product_quantity;
+      foundEl = true;
+      break;
+    }
+  }
+  if (foundEl === false) {
+    shoppingCart.push(tempObject);
+  }
   let opacityBackground = document.createElement("div");
   opacityBackground.className = "opacityBackGround";
 
@@ -94,14 +111,18 @@ function openBasketShopping(productObject) {
     let basketBodyItemRemove = document.createElement("button");
     basketBodyItemRemove.id = "item-button--remove";
     basketBodyItemRemove.addEventListener("click", () => {
-      console.log(localStorage.getItem('userEmail'));
-      console.log(localStorage.getItem('userToken'));
+      console.log(localStorage.getItem("userEmail"));
+      console.log(localStorage.getItem("userToken"));
+      shoppingCart.splice(i, 1);
       removeProductFromBasket(basketBodyItem);
     });
-    basketBodyItemName.innerHTML = shoppingCart[i].name;
-    basketBodyItemPrice.innerHTML = shoppingCart[i].price;
+    basketBodyItemName.innerHTML = shoppingCart[i].product_name;
+    basketBodyItemPrice.innerHTML = shoppingCart[i].product_price;
     basketBodyItemQuantity.type = "number";
-    basketBodyItemQuantity.value = 1;
+    basketBodyItemQuantity.value = shoppingCart[i].product_quantity;
+    basketBodyItemQuantity.addEventListener("change", (e) => {
+      shoppingCart[i].product_quantity = parseInt(e.target.value);
+    });
     basketBodyItemRemove.innerHTML = "Remove";
     basketBodyItem.appendChild(basketBodyItemNameDiv);
     basketBodyItem.appendChild(basketBodyItemPriceDiv);
@@ -122,6 +143,15 @@ function openBasketShopping(productObject) {
   let checkoutButton = document.createElement("button");
   checkoutButton.className = "btn-checkout";
   checkoutButton.innerHTML = "Checkout";
+  checkoutButton.addEventListener("click", (e) => {
+    fetch('http://localhost:8125/api/commands',{
+      method:'POST',
+      body:JSON.stringify(shoppingCart)
+    }).then(data => {
+      console.log(data);
+      shoppingCart = [];
+    })
+  });
   basketFooter.appendChild(continueShoppingButton);
   basketFooter.appendChild(checkoutButton);
 

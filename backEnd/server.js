@@ -102,7 +102,13 @@ function serverHandler(request, response) {
         response.end(JSON.stringify({status:"Not Ok"}));
       });
     }else if(paramObj.path === "commands"){
-      
+      dh.getCommandHistory(paramObj.query.token).then((data)=>{
+        response.writeHead(200);
+        response.end(JSON.stringify(data));
+      }).catch((status)=>{
+        response.writeHead(404);
+        response.end(JSON.stringify({status:"Not Ok"}));
+      });
     }
   } else if (request.method === "POST") {
     if (paramObj.path === "products") {

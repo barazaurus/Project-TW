@@ -101,9 +101,20 @@ class Header extends HTMLElement {
   }
 }
 
-let test = headerTemplate.content.querySelector('#logout-btn');
-test.addEventListener('click', () => {
-  window.location.href = '/frontEnd/app.html'
-})
+let logoutBtn = headerTemplate.content.querySelector("#logout-btn");
+logoutBtn.addEventListener("click", () => {
+  window.location.href = "/frontEnd/app.html";
+});
+
+let userTypeButton = headerTemplate.content.querySelector(".fa-user-alt");
+let userTypeLocalStorage = localStorage.getItem("userType");
+userTypeButton.addEventListener("click", () => {
+  console.log(userTypeLocalStorage);
+  if (userTypeLocalStorage == 0) {
+    window.location.href = "/frontEnd/components/basket-shopping-history/basket-history.html";
+  } else {
+    window.location.href = "/frontEnd/components/admin-page/admin.html";
+  }
+});
 
 customElements.define("header-component", Header);
