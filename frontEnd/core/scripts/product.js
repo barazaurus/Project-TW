@@ -44,9 +44,8 @@ function createProduct(productObject) {
 }
 
 function openBasketShopping(productObject) {
-  //command_id,email,product_name,product_quantity,product_price
   let tempObject = {
-    email: "lili@gmail.com",
+    email: localStorage.getItem("userEmail"),
     product_name: productObject.name,
     product_quantity: 1,
     product_price: productObject.price,
@@ -111,8 +110,8 @@ function openBasketShopping(productObject) {
     let basketBodyItemRemove = document.createElement("button");
     basketBodyItemRemove.id = "item-button--remove";
     basketBodyItemRemove.addEventListener("click", () => {
-      console.log(localStorage.getItem("userEmail"));
-      console.log(localStorage.getItem("userToken"));
+      // console.log(localStorage.getItem("userEmail"));
+      // console.log(localStorage.getItem("userToken"));
       shoppingCart.splice(i, 1);
       removeProductFromBasket(basketBodyItem);
     });

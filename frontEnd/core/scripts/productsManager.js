@@ -24,20 +24,16 @@ function createProduct(productObject) {
   productPrice.innerHTML = productObject.price;
   productTitlePrice.appendChild(productTitle);
   productTitlePrice.appendChild(productPrice);
-
-  // let productBuyButton = document.createElement("button");
-  // productBuyButton.className = "btn-buy";
-  // productBuyButton.innerHTML = `BUY <i class="fa fa-shopping-cart"></i>`;
-  // productBuyButton.addEventListener("click", openBasketShopping);
-
   let product = document.createElement("div");
   product.className = "top-rated--product";
   product.appendChild(productImage);
   product.appendChild(productTitlePrice);
   let removeBtn = document.createElement("button");
   removeBtn.textContent = "remove";
+  removeBtn.className = "btn-remove";
   let editBtn = document.createElement("button");
   editBtn.textContent = "edit";
+  removeBtn.className = "btn-edit";
   removeBtn.classList.add("manage-btn");
   editBtn.classList.add("manage-btn");
   editBtn.style.marginBottom = "30px";
@@ -61,97 +57,6 @@ function createProduct(productObject) {
   document.querySelector(".products").appendChild(product);
 }
 
-function openBasketShopping() {
-  let opacityBackground = document.createElement("div");
-  opacityBackground.className = "opacityBackGround";
-
-  let basketPopUp = document.createElement("div");
-  basketPopUp.className = "basketPopUp";
-
-  let basketHeader = document.createElement("div");
-  basketHeader.className = "basket--flex-item";
-  let basketHeaderTitle = document.createElement("span");
-  basketHeaderTitle.innerHTML = "Basket Shopping";
-  basketHeaderTitle.id = "basketPopUp--title";
-  basketHeader.appendChild(basketHeaderTitle);
-
-  let basketBody = document.createElement("div");
-  basketBody.className = "basket--flex-item";
-  let basketBodyItem = document.createElement("div");
-  basketBodyItem.className = "basket-item--content";
-
-  let basketBodyItemNameDiv = document.createElement("div");
-  let basketBodyItemNameTitle = document.createElement("span");
-  let basketBodyItemName = document.createElement("span");
-  basketBodyItemNameDiv.className = "item-content--flex";
-  basketBodyItemNameTitle.innerHTML = "Name";
-  basketBodyItemNameTitle.id = "item-name--title";
-  basketBodyItemNameDiv.appendChild(basketBodyItemNameTitle);
-  basketBodyItemNameDiv.appendChild(basketBodyItemName);
-
-  let basketBodyItemPriceDiv = document.createElement("div");
-  let basketBodyItemPriceTitle = document.createElement("span");
-  let basketBodyItemPrice = document.createElement("span");
-  basketBodyItemPriceDiv.className = "item-content--flex";
-  basketBodyItemPriceTitle.id = "item-price--title";
-  basketBodyItemPriceTitle.innerHTML = "Price";
-  basketBodyItemPriceDiv.appendChild(basketBodyItemPriceTitle);
-  basketBodyItemPriceDiv.appendChild(basketBodyItemPrice);
-
-  let basketBodyItemQuantityDiv = document.createElement("div");
-  let basketBodyItemQuantityTitle = document.createElement("span");
-  let basketBodyItemQuantity = document.createElement("input");
-  basketBodyItemQuantityDiv.className = "item-content--flex";
-  basketBodyItemQuantity.id = "item-quantity--input";
-  basketBodyItemQuantityDiv.appendChild(basketBodyItemQuantityTitle);
-  basketBodyItemQuantityDiv.appendChild(basketBodyItemQuantity);
-
-  let basketBodyItemRemove = document.createElement("button");
-  basketBodyItemRemove.id = "item-button--remove";
-  basketBodyItemRemove.addEventListener("click", () => {
-    removeProductFromBasket(basketBodyItem);
-  });
-  basketBodyItemName.innerHTML = product.name;
-  basketBodyItemPrice.innerHTML = product.price;
-  basketBodyItemQuantity.type = "number";
-  basketBodyItemQuantity.value = 1;
-  basketBodyItemRemove.innerHTML = "Remove";
-  basketBodyItem.appendChild(basketBodyItemNameDiv);
-  basketBodyItem.appendChild(basketBodyItemPriceDiv);
-  basketBodyItem.appendChild(basketBodyItemQuantityDiv);
-  basketBodyItem.appendChild(basketBodyItemRemove);
-  basketBody.appendChild(basketBodyItem);
-
-  let basketFooter = document.createElement("div");
-  basketFooter.className = "basket--flex-item";
-  let continueShoppingButton = document.createElement("button");
-  continueShoppingButton.className = "btn-continueShopping";
-  continueShoppingButton.innerHTML = "Continue Shopping";
-  continueShoppingButton.addEventListener("click", () => {
-    closeBasket(opacityBackground);
-  });
-  let checkoutButton = document.createElement("button");
-  checkoutButton.className = "btn-checkout";
-  checkoutButton.innerHTML = "Checkout";
-  basketFooter.appendChild(continueShoppingButton);
-  basketFooter.appendChild(checkoutButton);
-
-  basketPopUp.appendChild(basketHeader);
-  basketPopUp.appendChild(basketBody);
-  basketPopUp.appendChild(basketFooter);
-
-  opacityBackground.appendChild(basketPopUp);
-  document.body.appendChild(opacityBackground);
-}
-
-function removeProductFromBasket(event) {
-  event.remove();
-}
-
-function closeBasket(event) {
-  event.remove();
-}
-
 fetch("http://localhost:8125/api/products")
   .then((resp) => resp.json())
   .then((products) => {
@@ -167,3 +72,8 @@ async function deleteProductFromDB(url = "", data = {}) {
   });
   return response.json();
 }
+
+var addNewProductButton = document.getElementById('new-product--btn');
+addNewProductButton.addEventListener('click', () => {
+  window.location.href = "/frontEnd/components/admin-page/admin.html";
+});

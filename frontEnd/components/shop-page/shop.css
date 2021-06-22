@@ -20,7 +20,7 @@ header-component{
 }
 
 .opacityBackGround {
-  position: absolute;
+  position: fixed;
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -121,7 +121,7 @@ header-component{
 }
 
 .shop-categories {
-  height: 20%;
+  height: 200px;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 20px;
