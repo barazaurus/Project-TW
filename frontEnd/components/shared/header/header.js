@@ -113,7 +113,7 @@ userTypeButton.addEventListener("click", () => {
   if (userTypeLocalStorage == 0) {
     window.location.href = "/frontEnd/components/basket-shopping-history/basket-history.html";
   } else {
-    window.location.href = "/frontEnd/components/admin-page/admin.html";
+    window.location.href = "/frontEnd/components/admin-manage/admin-manage.html";
   }
 });
 

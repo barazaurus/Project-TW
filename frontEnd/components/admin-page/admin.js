@@ -1,12 +1,6 @@
 document.getElementById('btn').addEventListener('click',()=>{
-    // console.log(document.getElementById('img').files);
-    // let file = document.getElementById('img').files[0];
-    // let reader = new FileReader();
-    // reader.addEventListener('load',function(){
-    //     console.log(reader.result);
-    // });
-    // reader.readAsDataURL(file);
     buildPostBody();
+    window.location.href = "/frontEnd/components/admin-manage/admin-manage.html";
 });
 
 function buildPostBody(){
@@ -21,7 +15,7 @@ function buildPostBody(){
     let reader = new FileReader();
     reader.addEventListener('load',function(){
         body.image = reader.result;
-        fetch(' ',{
+        fetch('http://localhost:8125/api/products',{
             method:'POST',
             body:JSON.stringify(body)
         }).then(resp => resp.json()).then(data => {
@@ -29,4 +23,4 @@ function buildPostBody(){
         });
     });
     reader.readAsDataURL(file);
-} 
+}

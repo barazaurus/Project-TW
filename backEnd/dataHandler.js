@@ -4,7 +4,7 @@ const uniqid = require("uniqid");
 
 class DataHandler {
   constructor() {
-    this.db = new sqlite.Database("../data/bahopa.db", (err) => {
+    this.db = new sqlite.Database("../dataBase/bahopa.db", (err) => {
       if (err) {
         console.error(err.message);
       }
@@ -251,8 +251,8 @@ class DataHandler {
     let sql = "INSERT INTO licitatie(email,bid) VALUES(?,?)";
     return new Promise((resolve, reject) => {
       this.db.run(sql, [bidObject.email, bidObject.bid], (err) => {
-        if (err) {
-          reject(400);
+        if (err) {   
+       reject(400);
         } else {
           resolve(200);
         }
@@ -265,8 +265,9 @@ class DataHandler {
     return new Promise((resolve,reject)=>{
       this.db.run(sql,[productObject.product_id],(err)=>{
         if(err){
+
           reject(400);
-        }else{
+        } else {
           resolve(200);
         }
       });

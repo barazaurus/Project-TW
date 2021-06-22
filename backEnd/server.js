@@ -109,6 +109,30 @@ function serverHandler(request, response) {
         response.writeHead(404);
         response.end(JSON.stringify({status:"Not Ok"}));
       });
+    }else if(paramObj.path === "visits"){
+      dh.getMostVisitedProducts().then(data=>{
+        response.writeHead(200);
+        response.end(JSON.stringify(data));
+      }).catch((status)=>{
+        response.writeHead(404);
+        response.end(JSON.stringify({status:"Not Found"}));
+      });
+    }else if(paramObj.path === "bids"){
+      dh.getAllBids().then(data => {
+        response.writeHead(200);
+        response.end(JSON.stringify(data));
+      }).catch((status)=>{
+        response.writeHead(404);
+        response.end(JSON.stringify({status:"No bids"}));
+      });
+    }else if(paramObj.path === "bestBid"){
+      dh.getBestBid().then(data => {
+        response.writeHead(200);
+        response.end(JSON.stringify(data));
+      }).catch(status => {
+        response.writeHead(404);
+        response.end(JSON.stringify({status:"No best bid!"}));
+      });
     }
   } else if (request.method === "POST") {
     if (paramObj.path === "products") {
@@ -186,6 +210,16 @@ function serverHandler(request, response) {
           response.end(JSON.stringify({status:"Bad request!"}));
         });
       });      
+    }else if(paramObj.path === "bids"){
+      buildBody(request).then((body)=>{
+        dh.addBid(body).then(data => {
+          response.writeHead(200);
+          response.end(JSON.stringify({status:"Bid placed!"}));
+        }).catch((status)=>{
+          response.writeHead(400);
+          response.end(JSON.stringify({status:"Bid could not be placed!"}));
+        })
+      })
     }
   } else if (request.method === "PATCH") {
     buildBody(request).then((body) => {
@@ -212,6 +246,16 @@ function serverHandler(request, response) {
             response.end(JSON.stringify({ status: "Product not updated!" }));
           });
       });
+    }else if(paramObj.path === "visits"){
+      buildBody(request).then((body)=>{
+        dh.updateVisits(body).then((status)=>{
+          response.writeHead(200);
+          response.end(JSON.stringify({status:"Updated!"}))
+        }).catch((status)=>{
+          response.writeHead(404);
+          response.end(JSON.stringify({status:"Not updated due to error!"}));
+        })
+      });
     }
   } else if (request.method === "DELETE") {
     if (paramObj.path === "products") {
@@ -228,6 +272,14 @@ function serverHandler(request, response) {
             );
           });
       });
+    }else if(paramObj.path === "bids"){
+      dh.clearBids().then(data => {
+        response.writeHead(200);
+        response.end(JSON.stringify({status:"Bids deleted"}));
+      }).catch((status)=>{
+        response.writeHead(400);
+        response.end(JSON.stringify({status:"Bids could not be deleted!"}));
+      })
     }
   }
 }
