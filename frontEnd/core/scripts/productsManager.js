@@ -24,7 +24,12 @@ function createProduct(productObject) {
   productPrice.innerHTML = productObject.price;
   productTitlePrice.appendChild(productTitle);
   productTitlePrice.appendChild(productPrice);
-  
+
+  // let productBuyButton = document.createElement("button");
+  // productBuyButton.className = "btn-buy";
+  // productBuyButton.innerHTML = `BUY <i class="fa fa-shopping-cart"></i>`;
+  // productBuyButton.addEventListener("click", openBasketShopping);
+
   let product = document.createElement("div");
   product.className = "top-rated--product";
   product.appendChild(productImage);

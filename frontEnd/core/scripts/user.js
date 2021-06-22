@@ -183,7 +183,8 @@ function loginUser() {
           this.userAfterLogin.token = user.token;
 
           localStorage.setItem('userEmail', user.email);
-          localStorage.setItem('userToken', user.token)
+          localStorage.setItem('userToken', user.token);
+          localStorage.setItem('userType', user.type);
         }
       );
     }

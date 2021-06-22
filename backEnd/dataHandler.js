@@ -41,10 +41,11 @@ class DataHandler {
     let commandArr = [];
     //command_id,user_id,product_name,product_quantity,product_price
     commandArr.push(object["command_id"]);
-    commandArr.push(object["user_id"]);
+    commandArr.push(object["email"]);
     commandArr.push(object["product_name"]);
     commandArr.push(object["product_quantity"]);
     commandArr.push(object["product_price"]);
+    return commandArr;
   }
 
   constructSqlCommand(searchObject) {
@@ -199,7 +200,62 @@ class DataHandler {
     });
   }
 
+  clearBids(){
+    let sql = "delete from licitatie";
+    return new Promise((resolve,reject)=>{
+      this.db.run(sql,[],(err)=>{
+        if(err){
+          reject(400);
+        }else{
+          resolve(200);
+        }
+      });
+    });
+  }
+
+  getBestBid(){
+    let sql = "select * from licitatie where bid = (select MAX(bid) from licitatie)";
+    return new Promise((resolve,reject)=>{
+      this.db.get(sql,[],(err,row)=>{
+        console.log(row);
+        if(err || row === undefined){
+          reject(400);
+        }else{
+          resolve(row);
+        }
+      });
+    });
+  }
+
+  getAllBids(){
+    let sql = "select * from licitatie";
+    return new Promise((resolve,reject)=>{
+      this.db.all(sql,[],(err,rows)=>{
+        if(err){
+          reject(200);
+        }
+        else{
+          resolve(rows);
+        }
+      });
+    });
+  }
+
+  addBid(bidObject){
+    let sql = "INSERT INTO licitatie(email,bid) VALUES(?,?)";
+    return new Promise((resolve,reject)=>{
+      this.db.run(sql,[bidObject.email,bidObject.bid],(err)=>{
+        if(err){
+          reject(400);
+        }else{
+          resolve(200);
+        }
+      });
+    });
+  }
+
   addCommand(commands) {
+    console.log(commands);
     let sql =
       "INSERT INTO commands(command_id,email,product_name,product_quantity,product_price) VALUES(?,?,?,?,?)";
     let number = 0;
@@ -302,5 +358,6 @@ class DataHandler {
     });
   }
 }
+
 
 module.exports.DataHandler = DataHandler;

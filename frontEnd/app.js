@@ -15,7 +15,3 @@ signupLink.onclick = () => {
   signupBtn.click();
   return false;
 };
-previewHref.onclick = () => {
-  console.log('pressed');
-  window.location.href='./components/home-page/home.html';
-}

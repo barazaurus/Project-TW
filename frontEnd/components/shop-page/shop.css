@@ -15,6 +15,10 @@ body {
   display: flex;
 }
 
+header-component{
+  margin-bottom: 10%;
+}
+
 .opacityBackGround {
   position: absolute;
   height: 100%;
@@ -46,6 +50,9 @@ body {
 
 .basket--flex-item:nth-child(2){
   padding-top:10px;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  padding-top:17%;
 }
 
 .basket-item--content {
@@ -54,7 +61,6 @@ body {
 }
 
 .item-content--flex {
-  /* margin: 10px; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -78,6 +84,12 @@ body {
   position: relative;
   left: 15%;
   top: -100%;
+}
+
+.products{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .btn-checkout {
@@ -105,48 +117,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* flex: none; */
+  overflow-y:scroll;
 }
 
 .shop-categories {
-  height: 100%;
+  height: 20%;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   box-shadow: 10px 10px 40px 0 rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 1920px) {
-  .products {
-    padding-top: 35%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 1400px) {
-  .products {
-    padding-top: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 1200px) {
-  .products {
-    padding-top: 120%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-  }
 }
 
 .top-rated--product {
@@ -251,4 +230,45 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.main{
+  display: flex;
+  margin-top: 3%;
+}
+
+@media only screen and (max-width: 1600px) {
+  .main{
+    display: flex;
+    margin-top: 4%;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .main{
+    display: flex;
+    margin-top: 5%;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .main{
+    display: flex;
+    margin-top: 6%;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .main{
+    display: flex;
+    margin-top: 7%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .main{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10%;
+  }
 }
