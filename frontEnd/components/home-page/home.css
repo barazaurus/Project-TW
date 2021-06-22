@@ -82,6 +82,11 @@ h2 {
     position: relative;
 }
 
+.products{
+    display: flex;
+    flex-wrap: wrap;
+}
+
 @media only screen and (max-width: 600px) {
     .top-rated--product {
         margin-right: 0;
