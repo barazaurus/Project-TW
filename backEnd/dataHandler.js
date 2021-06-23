@@ -36,7 +36,6 @@ class DataHandler {
 
   buildCommand(object) {
     let commandArr = [];
-    //command_id,user_id,product_name,product_quantity,product_price
     commandArr.push(object["command_id"]);
     commandArr.push(object["email"]);
     commandArr.push(object["product_name"]);
@@ -178,6 +177,47 @@ class DataHandler {
     });
   }
 
+  getAllCommands(token){
+    let sql = "SELECT * FROM commands";
+    let dataObj = {};
+    return new Promise((resolve,reject)=>{
+      this.db.all(sql,[],(err,rows)=>{
+        for(let i=0;i<rows.length;i++){
+          if(dataObj[rows[i].command_id] === undefined){
+            dataObj[rows[i].command_id] = [];
+          }
+          dataObj[rows[i].command_id].push(rows[i]);
+        }
+        resolve(dataObj);
+      });
+    });
+  }
+
+  getCommandsAsCSV(token){
+    let sql = "SELECT * FROM commands";
+    let dataObj = {};
+    return new Promise((resolve,reject)=>{
+      this.db.all(sql,[],(err,rows)=>{
+        for(let i=0;i<rows.length;i++){
+          if(dataObj[rows[i].product_name] === undefined){
+            dataObj[rows[i].product_name] = {price:0,quantity:0,total:0};
+            dataObj[rows[i].product_name].price = rows[i].product_price;
+          }
+          dataObj[rows[i].product_name].quantity += rows[i].product_quantity;
+          dataObj[rows[i].product_name].total += rows[i].product_price*rows[i].product_quantity;
+        }
+        let result = {content:''};
+        let temp = 'Product_Name,Product_Price,Product_Quantity,Total\n';
+        for(let key in dataObj){
+          temp += key + ',' + dataObj[key].price + ',' + dataObj[key].quantity + ',' + dataObj[key].total + '\n';
+        }
+        result.content = temp;
+        resolve(result);
+      });
+    });
+  }
+
+
   //inserts
   addProduct(product) {
     let sqlcmd =
@@ -251,8 +291,8 @@ class DataHandler {
     let sql = "INSERT INTO licitatie(email,bid) VALUES(?,?)";
     return new Promise((resolve, reject) => {
       this.db.run(sql, [bidObject.email, bidObject.bid], (err) => {
-        if (err) {   
-       reject(400);
+        if (err) {
+          reject(400);
         } else {
           resolve(200);
         }
@@ -265,9 +305,8 @@ class DataHandler {
     return new Promise((resolve,reject)=>{
       this.db.run(sql,[productObject.product_id],(err)=>{
         if(err){
-
           reject(400);
-        } else {
+        }else{
           resolve(200);
         }
       });

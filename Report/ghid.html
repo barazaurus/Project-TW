@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ghid FunClo</title>
+</head>
+
+
+<body>
+    <header>
+        <h1 style="color:rgb(126, 31, 126)">Ghid FunClo</h1>
+    </header>
+
+    <section typeof="sa:AuthorsList">
+        <h3>Authors</h3>
+        <ul>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <span typeof="schema:Person" resource="">
+                    <meta property="schema:givenName" content="Paul">
+                    <meta property="schema:familyName" content="Hordila">
+                    <span property="schema:name">Paul Hordila</span>
+                </span>
+                <ul>
+                    <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                        <a href="paul.hordila@yahoo.com" property="schema:email">paul.hordila@yahoo.com</a>
+                    </li>
+                </ul>
+            </li>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <span typeof="schema:Person" resource="">
+                    <meta property="schema:givenName" content="Andrei-Alexandru">
+                    <meta property="schema:familyName" content="Baractaru">
+                    <span property="schema:name">Andrei-Alexandru Baractaru</span>
+                </span>
+                <ul>
+                    <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                        <a href="andrei.baractaru@gmail.com" property="schema:email">andrei.baractaru@gmail.com</a>
+                    </li>
+                </ul>
+            </li>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <span typeof="schema:Person" resource="">
+                    <meta property="schema:givenName" content="Ioana">
+                    <meta property="schema:familyName" content="Popa">
+                    <span property="schema:name">Ioana Popa</span>
+                </span>
+                <ul>
+                    <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                        <a href="ioanap03ip@gmail.com" property="schema:email">ioanap03ip@gmail.com</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section typeof="sa:Ghid">
+        <h2 style="color:rgb(126, 31, 126)">1. Ghid</h2>
+        BaHoPa este o aplicatie de tipul magazin online.
+        Ca si utilizator. Poti sa iti creezi un cont prin cadrul paginii de inregistrare utilizator. Acolo vei introduce
+        email-ul si parola, iar contul va fi creat.
+        Ulterior, poti utiliza acest cont de utilizator pentru a te putea loga prin cadrul paginii de logare, unde vei
+        introduce email-ul si parola.
+        Odata logat in cadrul platformei, vei avea pagina principala, unde ca si utilizator vei putea vedea cele mai
+        vandute 3 produse de pe site, sortate
+        in functie de numarul de cumparari.
+        </br>
+        Pe pagina de shop vei avea acces la lista completa a produselor, le vei putea filtra dupa categorie, si vei
+        putea cumpara un anumit produs apasand pe
+        butonul de buy atasat unui card cu descrierea produsului. Tot pe aceasta pagina iti vei putea vizualiza cosul de
+        cumparaturi si vei putea modifica
+        cantitatile de produse sau sa stergi cu totul un produs din cos. La final, poti da checkout pe cosul de
+        cumparaturi pentru a plasa comanda.
+        Ca si utilizator ai un buton in colt dreapta sus care te duce pe pagina unde poti vizualiza toate comenzile
+        plasate, continutul lor, cantitatea pentru fiecare
+        produs si bineinteles pretul.
+        </br>
+        Ca si utilizator, ai acces pe pagina de Licitare/Auction, unde poti sa faci o oferta pentru un produs licitat,
+        licitatia e pornita de admin.
+        Ca si admin, te poti loga. Conturile de admin insa sunt create doar de administratorul bazei de date sau
+        printr-o ruta care nu e accesibila din interfata.
+        Daca te loghezi ca si admin, poti vedea pagina de home la fel ca utilizatorul si cea de shop, doar ca nu poti
+        cumpara nimic. Butonul care duce utilizatorul
+        in pagina unde isi poate vedea istoricul comenzilor, va duce admin-ul intr-o pagina unde poate sa gestioneze
+        produsele.
+        </br>
+        Aceasta pagina de gestionare, contine lista cu toate produsele, fiecare produs avand buton pentru Stergere si
+        Editare, si un buton pentru a incepe o licitatie
+        cu un anumit produs, toate 3 atasate pe card-ul corespunzator produsului. De asemenea, in pagina ceasta exista
+        si un buton pentru adaugarea unui nou produs.
+        Pe partea de adaugare produs, ca si admin, ajungi la un form unde completezi o serie de input-uri, de la
+        denumire la descriere, cantitati si pret pentru produs,
+        apoi in momentul in care dai save, produsul va fi salvat in baza de date. Partea de editare se comporta
+        asemanator, doar ca input-urile fiind cu datele curente
+        ale produsului selectat, cum ar fi denumirea sau descrierea, pretul, etc.
+        </br>
+        Ca si administrator, poti incepe o licitatie cu un anumit produs, in pagina de Licitare unde clientul putea
+        plasa o oferta, vei putea vedea o tabela cu
+        toti cei care liciteaza, tabela disponibila si in pagina clientului, si vei putea opri licitatia.
+    </section>
+</body>
+
+</html>

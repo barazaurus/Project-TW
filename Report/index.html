@@ -1,129 +1,180 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title> Documentatie FunClo </title>
-    <link rel="stylesheet" href="scholarly.min.css">
-    <meta name="author" content="Popa Ioana">
-    <meta name="author" content="Baractaru Andrei-Alexandru ">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Documentatie FunClo</title>
 </head>
+
 
 <body>
     <header>
-        <div class="banner">
-            <div class="status" style="background-color: aquamarine; color:black;"> FunClo </div>
-        </div>
-        <h1> Documentatie FunClo </h1>
+        <h1 style="color:rgb(126, 31, 126)">Documentatie FunClo</h1>
     </header>
-    <div role="contentinfo">
-        <dl>
-            <dt>Authors</dt>
-            <dd>
-                <strong> Popa Ioana </strong>
-            </dd>
-            <dd>
-                <strong> Baractaru Andrei-Alexandru </strong>
-            </dd>
-        </dl>
-    </div>
-    <br>
-    <ol>
-        <li> <a href="#RevisionHistory" style="text-decoration: none;"> Revision History </a></li>
-        <li> <a href="#Introduction" style="text-decoration: none;"> Introduction </a></li>
-        <li> <a href="#OverallDescription" style="text-decoration: none;"> Overall Description </a></li>
-        <li> <a href="#External_Interface_Requirements" style="text-decoration: none;">  External Interface Requirements</a></li>
-        <li> <a href="#System_Features" style="text-decoration: none;"> System Features </a></li>
-        <li> <a href="#Other_Nonfunctional_Requirements" style="text-decoration: none;"> Other Nonfunctional Requirements </a></li>
-        <li> <a href="#Other_Requirements" style="text-decoration: none;"> Other Requirements </a></li>
-    </ol>
-    <section id="#RevisionHistory">
-        <h2> Revision History </h2>
-        <table style="width:100%;">
-            <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Reason For Changes </th>
-                <th>Version </th>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-        </table>
+
+    <section typeof="sa:AuthorsList">
+        <h3>Authors</h3>
+        <ul>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <span typeof="schema:Person" resource="">
+                    <meta property="schema:givenName" content="Paul">
+                    <meta property="schema:familyName" content="Hordila">
+                    <span property="schema:name">Paul Hordila</span>
+                </span>
+                <ul>
+                    <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                        <a href="paul.hordila@yahoo.com" property="schema:email">paul.hordila@yahoo.com</a>
+                    </li>
+                </ul>
+            </li>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <span typeof="schema:Person" resource="">
+                    <meta property="schema:givenName" content="Andrei-Alexandru">
+                    <meta property="schema:familyName" content="Baractaru">
+                    <span property="schema:name">Andrei-Alexandru Baractaru</span>
+                </span>
+                <ul>
+                    <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                        <a href="andrei.baractaru@gmail.com" property="schema:email">andrei.baractaru@gmail.com</a>
+                    </li>
+                </ul>
+            </li>
+            <li typeof="sa:ContributorRole" property="schema:author">
+                <span typeof="schema:Person" resource="">
+                    <meta property="schema:givenName" content="Ioana">
+                    <meta property="schema:familyName" content="Popa">
+                    <span property="schema:name">Ioana Popa</span>
+                </span>
+                <ul>
+                    <li property="schema:roleContactPoint" typeof="schema:ContactPoint">
+                        <a href="ioanap03ip@gmail.com" property="schema:email">ioanap03ip@gmail.com</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </section>
-    <section id="Introduction">
-        <h2> Introduction </h2>
-        <subsection id="Purpose">
-            <h3> Purpose </h3>
-            <p> AICI TEXT </p>
-        </subsection>
-        <subsection id="Document_Conventions">
-            <h3> Document Conventions </h3>
-            <p> AICI TEXT </p>
-        </subsection>
-        <subsection id="Product_Scope">
-            <h3> Product score </h3>
-            <p> AICIT TEXT </p>
-        </subsection>
+
+    <section typeof="sa:Abstract">
+        <h2 style="color:rgb(126, 31, 126)">1. Abstract</h2>
+        BaHoPa este o aplicatie de tipul magazin online. Permite utilizatorului sa isi creeze cont si sa cumpere dintr-o
+        selectie de produse,
+        acesta poate vizualiza produse, are un cos de cumparaturi editabil, si poate plasa o comanda pe care apoi o
+        poate vedea in pagina
+        de comenzi. Este si o parte de admin, acesta este un al-2-lea tip de utilizator care poate sa gestioneze
+        produsele de pe platforma,
+        poate adauga un produs nou si poate edita un produs deja existent. De asemenea, exista o functie de licitare,
+        unde admin-ul da spre licitatie
+        un anumit produs, iar utilizatorii liciteaza pentru a castiga.
     </section>
-    <section id="OverallDescription">
-        <h2> Overall Description </h2>
-        <subsection id="Product_Perspective">
-            <h3> Product Perspective </h3>
-            <p> AICI TEXT </p>
-        </subsection>
-        <subsection id="Product_Functions">
-            <h3> Product Perspective </h3>
-            <p> AICI TEXT </p>
-        </subsection>
-        <subsection id="Operating Enviroment">
-            <h3> Operating Enviroment </h3>
-            <p> AICI TEXT </p>
-        </subsection>
+
+    <section typeof="sa:Introduction">
+        <h2 style="color:rgb(126, 31, 126)">2. Introduction</h2>
+        Aplicatiile de tipul magazin online sunt foarte des intalnite, in ziua de astazi, mai ales in contextul
+        pandemic, oamenii au trecut
+        tot mai mult de la interactiune cu un punct de vanzare fizic la folosirea unor aplicatii cum sunt cele de tipul
+        magazin online. BaHoPa
+        preia majoritatea functiilor unui magazin online clasic, si adauga si aceasta componenta de licitatie, care
+        permite admin-ului sa distribuie
+        produse noi sau care poate sunt unice in stocul lor catre toti clientii. De asemenea, in pagina de pornire a
+        aplicatiei, orice client poate vedea
+        o lista a celor mai cumparate produse, lucru care poate sa il ajute in cadrul navigarii prin aplicatie sau sa ii
+        dea o idee legat de ce are nevoie
+        din magazinul nostru.
     </section>
-    <section id="External Interface Requirements">
-        <h2> External Interface Requirements </h2>
-        <subsection id="User_Interfaces">
-            <h3> User Interfaces </h3>
-            <p> AICI TEXT </p>
-        </subsection>
-        <subsection id="Hardware Interfaces">
-            <h3> Hardware Interfaces </h3>
-            <p> AICI TEXT </p>
-        </subsection>
-        <subsectiond id="Software Interfaces">
-            <h3> Software Interfaces</h3>
-            <p> AICI TEXT </p>
-            </subsection>
+
+    <section typeof="sa:Structure">
+        <h2 style="color:rgb(126, 31, 126)">3. Structure</h2>
+        Structura platformei este bazata pe modelul bine cunoscut, MVC(Model-view-controller), ce este un model
+        arhitectural. Succesul modelului se datoreaza izolarii logicii de bussines fata de considerentele interfetei cu
+        utilizatorul,
+        rezultand o aplicatie unde aspectul vizual sau/ si nivelele inferioare ale regulilor de bussines sunt mai usor
+        de modificat, fara a afecta alte nivele. Pe langa MVC, elementul controlor(API) este accesat prin AJAX,
+        prescurtarea pentru Asynchronous. Fiind o tehnica de programare pentru crearea de aplicatii web interactive
+        rapide.
+        O structurare in profunzime a aplicatiei sunt prezentate in sectiunile urmatoare.
     </section>
-    <section id="System_Features">
-        <h2> System Features </h2>
-        <p> AICI TEXT </p>
+
+    <section typeof="sa:appcomponents">
+        <h3>Componentele Aplicatiei</h3>
+        <ul>
+            <li property="schema: frontEnd">
+                <u>1. Front-End</u>
+                <br>
+                Aici ne referim la toata partea de client, html/css/javascript. In aceasta componenta avem tot ceea ce
+                inseamna aspect si structura a paginilor,
+                dar si o parte de logica pentru diverse evenimente. Utilizam AJAX pentru a putea face modificari in
+                cadrul paginii fara a produce o intrerupere
+                vizibila pentru utilizator. Aducem si trimitem date catre server constant deoarece in final site-ul are
+                un scop de prezentare pentru o serie de produse.
+                <br />
+                <br>
+            </li>
+
+            <li property="schema: Server">
+                <u>2. Server</u>
+                <br>
+                Partea de server este scrisa in NodeJs folosind modulul http al limbajului. Avem un server REST simplu,
+                care expune o serie de rute, acestea sunt
+                grupate in functie de metoda de apelare. Avem o functie utilitara care construieste un raspuns dat bazat
+                pe datele primite si pe datele extrase din baza de date.
+                Headerele pentru comunicarea cu clientul sunt suprascrise la inceput, pentru rezolvarea CORS-ului si
+                setarea tipului de continut trimis peste http.
+                <br />
+                <br>
+            </li>
+
+            <li property="schema: dataHandler">
+                <u>3. Data Handler</u>
+                <br>
+                Partea de management a bazei da date. Baza de date utilizata este de tipul sqlite. Utilizam API-ul node
+                js pentru executia instructiunilor pe o bazele de date
+                de tipul sqlite. Avem metode de inserare si extragere specifice pentru fiecare obiect, sunt si metode
+                definite pentru evenimente
+                mai complexe cum ar fi cosurile de cumparaturi. Aceasta componenta face uz de asincronism, fiecare
+                metoda returneaza o promisiune, astfel incat server-ul sa nu fie
+                blocat si un fir asincron separat sa trimita catre client un raspuns dupa ce datele din baza de date au
+                fost preluate si procesate.
+                <br />
+                <br>
+            </li>
+
+        </ul>
     </section>
-    <section id="Other_Nonfunctional_Requirements">
-        <h2> Other Nonfunctional Requirements</h2>
-        <p> AICI TEXT </p>
-    </section>
-    <section id="Other_Requirements">
-        <h2> Other Requirements </h2>
-        <p> AICI TEXT </p>
+
+
+    <h4>Sistem de gestionare a codului sursa</h4>
+    <h5>GitHub</h5>
+    Gestionarea codului sursa este facuta cu ajutorul git-ului, solutia git aleasa este GitHub. Am lucrat fiecare pe branch-uri sau pentru a reusi
+    dezvoltare proiectului in timp util si pentru a lucra mai multi odata pe fisiere diferite.
+    In cazul de fata, git-ul este utilizat pentru a oferi acces la codul sursa. 
+
+
+    <section typeof="sa:ReferencesList">
+        <h4>Referinte</h4>
+        <ul>
+            <li property="schema:linkReferences" typeof="schema:References">
+                <a href="https://profs.info.uaic.ro/~busaco/teach/courses/web/web-projects.html"
+                    property="schema:linkTW">Pagina
+                    Cursului</a>
+            </li>
+            <li property="schema:linkReferences" typeof="schema:References">
+                <a href="https://www.w3schools.com/" property="schema:linkTW">W3School</a>
+            </li>
+            <li property="schema:linkReferences" typeof="schema:References">
+                <a href="https://nodejs.org/en/docs/"
+                    property="schema:linkTW">Documentatie NodeJs</a>
+            </li>
+            <li property="schema:linkReferences" typeof="schema:References">
+                <a href="https://developer.mozilla.org/en-US/"
+                    property="schema:linkTW">Mozilla Developer</a>
+            </li>
+            <li property="schema:linkReferences" typeof="schema:References">
+                <a href="https://stackoverflow.com"
+                    property="schema:linkTW">Stackoverflow</a>
+            </li>
+        </ul>
     </section>
 </body>
 

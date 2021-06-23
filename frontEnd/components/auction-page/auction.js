@@ -11,10 +11,15 @@ var tableUserBids = document.querySelector(".users-top--bids");
 function getTopRatedProducts() {
   fetch(BIDED_PRODUCT_ROUTE)
     .then((resp) => {
-        if(resp.status === 404){
-            window.location.href = "../admin-manage/admin-manage.html";
+      if (resp.status === 404) {
+        if (localStorage.getItem("userType") == 1) {
+          window.location.href = "../admin-manage/admin-manage.html";
+        }else{
+          alert("No current auction!");
+          window.location.href = "../shop-page/shop.html";
         }
-        return resp.json();
+      }
+      return resp.json();
     })
     .then((productFromDB) => {
       console.log(productFromDB);
@@ -51,13 +56,14 @@ function createProduct(productObject) {
     productInputBid.type = "text";
     productInputBid.placeholder = "Enter your bid";
 
-    productBuyButton.addEventListener("click", () => {
+    productBuyButton.addEventListener("click", async () => {
       let inputBidValue = document.querySelector(".input-bid").value;
       console.log(inputBidValue);
-      addBidOnProduct(POST_BID_ROUTE, {
+      await addBidOnProduct(POST_BID_ROUTE, {
         email: userEmail,
         bid: inputBidValue,
       });
+      window.location.href = "./auction.html";
     });
 
     productFooter.appendChild(productInputBid);
@@ -65,17 +71,18 @@ function createProduct(productObject) {
   } else {
     let stopAuctionButton = document.createElement("button");
     stopAuctionButton.className = "btn--stopAuction";
-    stopAuctionButton.innerHTML = 'Stop Auction';
+    stopAuctionButton.innerHTML = "Stop Auction";
     stopAuctionButton.addEventListener("click", () => {
-     console.log('im here');
+      console.log("im here");
       fetch(STOP_AUCTION_ROUTE, { method: "DELETE" })
         .then((resp) => resp.json())
         .then((data) => {
-            console.log(data);
-            fetch(CLEAR_TABLE, { method: "DELETE" })
+          console.log(data);
+          fetch(CLEAR_TABLE, { method: "DELETE" })
             .then((resp) => resp.json())
             .then((data) => {
-                console.log(data);
+              console.log(data);
+              window.location.href = "./auction.html";
             });
         });
     });

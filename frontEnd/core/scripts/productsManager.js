@@ -1,4 +1,5 @@
 const DELETE_PRODUCT_URL = "http://localhost:8125/api/products";
+const START_AUCTION_URL = "http://localhost:8125/api/startAuction";
 let product = {
   name: "test",
   description: "test",
@@ -24,19 +25,25 @@ function createProduct(productObject) {
   productPrice.innerHTML = productObject.price;
   productTitlePrice.appendChild(productTitle);
   productTitlePrice.appendChild(productPrice);
+
   let product = document.createElement("div");
   product.className = "top-rated--product";
   product.appendChild(productImage);
   product.appendChild(productTitlePrice);
   let removeBtn = document.createElement("button");
-  removeBtn.textContent = "remove";
+  removeBtn.textContent = "Remove";
   removeBtn.className = "btn-remove";
   let editBtn = document.createElement("button");
-  editBtn.textContent = "edit";
+  editBtn.textContent = "Edit";
   removeBtn.className = "btn-edit";
+  let startAuctionButton = document.createElement("button");
+  startAuctionButton.textContent = "Start Auction";
+  startAuctionButton.className = "btn-start-auction";
+  startAuctionButton.classList.add("manage-btn");
   removeBtn.classList.add("manage-btn");
   editBtn.classList.add("manage-btn");
   editBtn.style.marginBottom = "30px";
+  product.appendChild(startAuctionButton);
   product.appendChild(removeBtn);
   product.appendChild(editBtn);
   removeBtn.addEventListener("click", () => {
@@ -51,8 +58,19 @@ function createProduct(productObject) {
       });
     product.remove();
   });
-  editBtn.addEventListener("click",()=>{
-    window.location.href = "../../components/admin-edit/admin-edit.html?id=" + productObject.product_id;
+  editBtn.addEventListener("click", () => {
+    window.location.href =
+      "../../components/admin-edit/admin-edit.html?id=" +
+      productObject.product_id;
+  });
+  startAuctionButton.addEventListener("click", () => {
+    startAuctionProduct(START_AUCTION_URL, {
+      product_id: productObject.product_id,
+    }).then((data) => {
+      console.log(data);
+    });
+    window.location.href =
+      "/frontEnd/components/auction-page/auction.html";
   });
   document.querySelector(".products").appendChild(product);
 }
@@ -73,7 +91,60 @@ async function deleteProductFromDB(url = "", data = {}) {
   return response.json();
 }
 
-var addNewProductButton = document.getElementById('new-product--btn');
-addNewProductButton.addEventListener('click', () => {
-  window.location.href = "/frontEnd/components/admin-page/admin.html";
+async function startAuctionProduct(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+function downloadTxt(file, text, format) {
+  let element = document.createElement("a");
+  if (format === "json") {
+    element.setAttribute(
+      "href",
+      "data:application/json;charset=utf-8, " + encodeURIComponent(text)
+    );
+  } else {
+    element.setAttribute(
+      "href",
+      "data:csv;charset=utf-8, " + encodeURIComponent(text)
+    );
+  }
+  element.setAttribute("download", file);
+
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+var addNewProductButton = document.getElementById("new-product--btn");
+addNewProductButton.addEventListener("click", () => {
+  window.location.href =
+    "/frontEnd/components/admin-page/admin.html";
+});
+var token = localStorage.getItem("userToken");
+let saveCSV = document.getElementById("new-product--csv");
+saveCSV.addEventListener("click", () => {
+  fetch(`http://localhost:8125/be/api/stats/csv?token=${token}`)
+    .then((resp) => resp.json())
+    .then((data) => {
+      let content = data.content;
+      let fname = "stats.csv";
+      downloadTxt(fname, content, "csv");
+    });
+});
+let saveTXT = document.getElementById("new-product--txt");
+saveTXT.addEventListener("click", () => {
+  fetch(`http://localhost:8125/be/api/stats/txt?token=${token}`)
+    .then((resp) => resp.json())
+    .then((data) => {
+      console.log(data);
+      let content = JSON.stringify(data);
+      let fname = "stats.json";
+      downloadTxt(fname, content, "json");
+    });
 });

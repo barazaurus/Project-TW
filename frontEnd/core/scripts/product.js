@@ -1,3 +1,4 @@
+const VISITED_PRODUCT_URL = "http://localhost:8125/api/visits";
 let products = [];
 let product = {
   name: "test",
@@ -27,10 +28,23 @@ function createProduct(productObject) {
   productTitlePrice.appendChild(productPrice);
 
   let productBuyButton = document.createElement("button");
+  productBuyButton.type = "button";
   productBuyButton.className = "btn-buy";
   productBuyButton.innerHTML = `BUY <i class="fa fa-shopping-cart"></i>`;
-  productBuyButton.addEventListener("click", () => {
-    openBasketShopping(productObject);
+  if(localStorage.getItem('userType') == 1){
+    productBuyButton.style.visibility = 'hidden';
+  }
+  productBuyButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    fetch(VISITED_PRODUCT_URL, {
+      method: "PATCH",
+      body: JSON.stringify({ product_id: productObject.product_id }),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        openBasketShopping(productObject);
+      });
   });
 
   let product = document.createElement("div");
@@ -110,8 +124,6 @@ function openBasketShopping(productObject) {
     let basketBodyItemRemove = document.createElement("button");
     basketBodyItemRemove.id = "item-button--remove";
     basketBodyItemRemove.addEventListener("click", () => {
-      // console.log(localStorage.getItem("userEmail"));
-      // console.log(localStorage.getItem("userToken"));
       shoppingCart.splice(i, 1);
       removeProductFromBasket(basketBodyItem);
     });
@@ -143,13 +155,14 @@ function openBasketShopping(productObject) {
   checkoutButton.className = "btn-checkout";
   checkoutButton.innerHTML = "Checkout";
   checkoutButton.addEventListener("click", (e) => {
-    fetch('http://localhost:8125/api/commands',{
-      method:'POST',
-      body:JSON.stringify(shoppingCart)
-    }).then(data => {
+    fetch("http://localhost:8125/api/commands", {
+      method: "POST",
+      body: JSON.stringify(shoppingCart),
+    }).then((data) => {
       console.log(data);
       shoppingCart = [];
-    })
+      window.location.href = "../../components/shop-page/shop.html";
+    });
   });
   basketFooter.appendChild(continueShoppingButton);
   basketFooter.appendChild(checkoutButton);
@@ -173,6 +186,7 @@ function closeBasket(event) {
 fetch("http://localhost:8125/api/products")
   .then((resp) => resp.json())
   .then((productsArray) => {
+    console.log("a");
     for (let product of productsArray) {
       products.push(createProduct(product));
     }
@@ -195,4 +209,12 @@ function selectListItem(e) {
         products.push(createProduct(product));
       }
     });
+}
+
+async function incrementVisitedProduct(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+  return response.json();
 }
