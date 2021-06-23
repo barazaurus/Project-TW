@@ -49,9 +49,10 @@ function buildBody(req) {
 }
 
 function serverHandler(request, response) {
-  response.setHeader("Content-Type", "application/json");
   let dh = new DataHandler();
+  response.setHeader("Content-Type", "application/json");
   let paramObj = extractParams(request.url);
+  console.log(request.method);
   console.log(paramObj);
 
   response.setHeader("Access-Control-Allow-Origin", "*");
@@ -59,7 +60,8 @@ function serverHandler(request, response) {
     "Access-Control-Allow-Methods",
     "POST,GET,PUT,DELETE,PATCH"
   );
-  if(request.method === 'OPTIONS'){
+  if (request.method === "OPTIONS") {
+    console.log("OPTIONS");
     response.writeHead(200);
     response.end(JSON.stringify({}));
   }
@@ -93,47 +95,87 @@ function serverHandler(request, response) {
         });
       }
     } else if (paramObj.path === "users") {
-    } else if(paramObj.path === "login"){
-      dh.checkUserIfLoggedIn(paramObj.query.token).then(data => {
+    } else if (paramObj.path === "login") {
+      dh.checkUserIfLoggedIn(paramObj.query.token)
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "Not Ok" }));
+        });
+    } else if (paramObj.path === "commands") {
+      dh.getCommandHistory(paramObj.query.token)
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "Not Ok" }));
+        });
+    } else if (paramObj.path === "visits") {
+      dh.getMostVisitedProducts()
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "Not Found" }));
+        });
+    } else if (paramObj.path === "bids") {
+      dh.getAllBids()
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "No bids" }));
+        });
+    } else if (paramObj.path === "bestBid") {
+      dh.getBestBid()
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "No best bid!" }));
+        });
+    } else if (paramObj.path === "auctionProduct") {
+      dh.getBidProduct()
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "No auction product!" }));
+        });
+    }  else if (paramObj.path === "csv") {
+      dh.getCommandsAsCSV()
+      .then((data)=>{
+        console.log(data);
         response.writeHead(200);
         response.end(JSON.stringify(data));
       }).catch((status)=>{
         response.writeHead(404);
-        response.end(JSON.stringify({status:"Not Ok"}));
+        response.end(JSON.stringify({status:"No data"}));
       });
-    }else if(paramObj.path === "commands"){
-      dh.getCommandHistory(paramObj.query.token).then((data)=>{
-        response.writeHead(200);
-        response.end(JSON.stringify(data));
-      }).catch((status)=>{
-        response.writeHead(404);
-        response.end(JSON.stringify({status:"Not Ok"}));
-      });
-    }else if(paramObj.path === "visits"){
-      dh.getMostVisitedProducts().then(data=>{
-        response.writeHead(200);
-        response.end(JSON.stringify(data));
-      }).catch((status)=>{
-        response.writeHead(404);
-        response.end(JSON.stringify({status:"Not Found"}));
-      });
-    }else if(paramObj.path === "bids"){
-      dh.getAllBids().then(data => {
-        response.writeHead(200);
-        response.end(JSON.stringify(data));
-      }).catch((status)=>{
-        response.writeHead(404);
-        response.end(JSON.stringify({status:"No bids"}));
-      });
-    }else if(paramObj.path === "bestBid"){
-      dh.getBestBid().then(data => {
-        response.writeHead(200);
-        response.end(JSON.stringify(data));
-      }).catch(status => {
-        response.writeHead(404);
-        response.end(JSON.stringify({status:"No best bid!"}));
-      });
-    }
+    } else if (paramObj.path === "txt") {
+      dh.getAllCommands()
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify(data));
+        })
+        .catch((status) => {
+          response.writeHead(404);
+          response.end(JSON.stringify({ status: "NO history!" }));
+        });
+      }
   } else if (request.method === "POST") {
     if (paramObj.path === "products") {
       buildBody(request).then((body) => {
@@ -155,7 +197,7 @@ function serverHandler(request, response) {
         body.type = 0;
         dh.registerUser(body)
           .then((data) => {
-            console.log('on reject');
+            console.log("on reject");
             response.writeHead(200);
             response.end(JSON.stringify(data));
           })
@@ -200,39 +242,73 @@ function serverHandler(request, response) {
             }
           });
       });
-    }else if(paramObj.path === "commands"){
-      buildBody(request).then((body)=>{
-        dh.addCommand(body).then(data => {
-          response.writeHead(200);
-          response.end(JSON.stringify({status:"Commands Inserted!"}));
-        }).catch((status)=>{
-          response.writeHead(400);
-          response.end(JSON.stringify({status:"Bad request!"}));
-        });
-      });      
-    }else if(paramObj.path === "bids"){
-      buildBody(request).then((body)=>{
-        dh.addBid(body).then(data => {
-          response.writeHead(200);
-          response.end(JSON.stringify({status:"Bid placed!"}));
-        }).catch((status)=>{
-          response.writeHead(400);
-          response.end(JSON.stringify({status:"Bid could not be placed!"}));
-        })
-      })
+    } else if (paramObj.path === "commands") {
+      buildBody(request).then((body) => {
+        dh.addCommand(body)
+          .then((data) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Commands Inserted!" }));
+          })
+          .catch((status) => {
+            response.writeHead(400);
+            response.end(JSON.stringify({ status: "Bad request!" }));
+          });
+      });
+    } else if (paramObj.path === "bids") {
+      buildBody(request).then((body) => {
+        dh.addBid(body)
+          .then((data) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Bid placed!" }));
+          })
+          .catch((status) => {
+            response.writeHead(400);
+            response.end(
+              JSON.stringify({ status: "Bid could not be placed!" })
+            );
+          });
+      });
+    } else if (paramObj.path === "startAuction") {
+      buildBody(request).then((body) => {
+        dh.bidProduct(body)
+          .then((data) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Auction started!" }));
+          })
+          .catch((status) => {
+            response.writeHead(400);
+            response.end(JSON.stringify({ status: "Auction not started!" }));
+          });
+      });
     }
   } else if (request.method === "PATCH") {
-    buildBody(request).then((body) => {
-      dh.updateProduct(body)
-        .then((data) => {
-          response.writeHead(200);
-          response.end(JSON.stringify({ status: "Product updated!" }));
-        })
-        .catch((status) => {
-          response.writeHead(404);
-          response.end(JSON.stringify({ status: "Product not found!" }));
-        });
-    });
+    if (paramObj.path === "visits") {
+      buildBody(request).then((body) => {
+        dh.updateVisits(body)
+          .then((status) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Updated!" }));
+          })
+          .catch((status) => {
+            response.writeHead(404);
+            response.end(
+              JSON.stringify({ status: "Not updated due to error!" })
+            );
+          });
+      });
+    } else {
+      buildBody(request).then((body) => {
+        dh.updateProduct(body)
+          .then((data) => {
+            response.writeHead(200);
+            response.end(JSON.stringify({ status: "Product updated!" }));
+          })
+          .catch((status) => {
+            response.writeHead(404);
+            response.end(JSON.stringify({ status: "Product not found!" }));
+          });
+      });
+    }
   } else if (request.method === "PUT") {
     if (paramObj.path === "products") {
       buildBody(request).then((body) => {
@@ -246,18 +322,10 @@ function serverHandler(request, response) {
             response.end(JSON.stringify({ status: "Product not updated!" }));
           });
       });
-    }else if(paramObj.path === "visits"){
-      buildBody(request).then((body)=>{
-        dh.updateVisits(body).then((status)=>{
-          response.writeHead(200);
-          response.end(JSON.stringify({status:"Updated!"}))
-        }).catch((status)=>{
-          response.writeHead(404);
-          response.end(JSON.stringify({status:"Not updated due to error!"}));
-        })
-      });
     }
   } else if (request.method === "DELETE") {
+    console.log("sunt pe delete");
+    console.log(paramObj);
     if (paramObj.path === "products") {
       buildBody(request).then((body) => {
         dh.deleteProduct(body)
@@ -272,14 +340,31 @@ function serverHandler(request, response) {
             );
           });
       });
-    }else if(paramObj.path === "bids"){
-      dh.clearBids().then(data => {
-        response.writeHead(200);
-        response.end(JSON.stringify({status:"Bids deleted"}));
-      }).catch((status)=>{
-        response.writeHead(400);
-        response.end(JSON.stringify({status:"Bids could not be deleted!"}));
-      })
+    } else if (paramObj.path === "bids") {
+      dh.clearBids()
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify({ status: "Bids deleted" }));
+        })
+        .catch((status) => {
+          response.writeHead(400);
+          response.end(
+            JSON.stringify({ status: "Bids could not be deleted!" })
+          );
+        });
+    } else if (paramObj.path === "clearAuction") {
+      console.log("am ajuns");
+      dh.clearBidProduct()
+        .then((data) => {
+          response.writeHead(200);
+          response.end(JSON.stringify({ status: "Bid product cleared!" }));
+        })
+        .catch((status) => {
+          response.writeHead(400);
+          response.end(
+            JSON.stringify({ status: "Auction not cleared, bad request!" })
+          );
+        });
     }
   }
 }
